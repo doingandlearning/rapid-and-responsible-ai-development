@@ -71,34 +71,27 @@ def load_books_to_db():
     """Load books with embeddings into PostgreSQL."""
 
     # Connect to the database
-    conn = psycopg.connect(**DB_CONFIG)
-    cur = conn.cursor()
+ 
 
     # Fetch data from the Open Library
     books = fetch_books()
-
-    for book in books:
-        description = (
-            f"Book titled '{book['title']}' by {', '.join(book['authors'])}. "
-            f"Published in {book['first_publish_year']}. "
-            f"This is a book about {book['subject']}."
-        )
+    with psycopg.connect(**DB_CONFIG) as conn:
+        with conn.cursor() as cur:
 
         # Generate embedding
-        # embedding = "[" + ",".join(["0"] * 1536) + "]"        # Placeholder embedding
-        embedding = get_embedding(description)
-        cur.execute(
-            """
-            INSERT INTO items (name, item_data, embedding)
-            VALUES (%s, %s, %s)
-            """,
-            (book["title"], json.dumps(book), embedding),
-        )
+            # embedding = "[" + ",".join(["0"] * 1536) + "]"        # Placeholder embedding
+            embedding = get_embedding(description)
+            cur.execute(
+                """
+                INSERT INTO items (name, item_data, embedding)
+                VALUES (%s, %s, %s)
+                """,
+                (book["title"], json.dumps(book), embedding),
+            )
 
-    # Commit and close
-    conn.commit()
-    cur.close()
-    conn.close()
+        # Commit
+            conn.commit()
+
 
 
 if __name__ == "__main__":
@@ -109,3 +102,11 @@ if __name__ == "__main__":
     except Exception as e:
         traceback.print_exc()
         print(f"Error loading books: {e}")
+   for book in books:
+        description = (
+            f"Book titled '{book['title']}' by {', '.join(book['authors'])}. "
+            f"Published in {book['first_publish_year']}. "
+            f"This is a book about {book['subject']}."
+        )
+
+  

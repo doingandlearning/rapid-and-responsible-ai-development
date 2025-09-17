@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced IT Support Guide - University of Edinburgh</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .section h3 {
+            color: #34495e;
+            margin-top: 25px;
+        }
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .troubleshooting {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        ul, ol {
+            padding-left: 25px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        .contact-info {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Advanced IT Support Guide</h1>
+        <p>University of Edinburgh - Comprehensive Technical Documentation</p>
+        <p>Version 2.1 | Last Updated: December 2024</p>
+    </div>
+
+    <div class="section">
+        <h2>1. System Architecture Overview</h2>
+        <p>The University of Edinburgh's IT infrastructure is built on a modern, scalable architecture designed to support over 50,000 users across multiple campuses.</p>
+        
+        <h3>Core Components</h3>
+        <ul>
+            <li><strong>Identity Management:</strong> Centralized authentication using Active Directory</li>
+            <li><strong>Network Infrastructure:</strong> High-speed fiber backbone with wireless coverage</li>
+            <li><strong>Cloud Services:</strong> Hybrid cloud environment with Microsoft Azure integration</li>
+            <li><strong>Security Framework:</strong> Multi-layered security with zero-trust principles</li>
+        </ul>
+
+        <div class="code-block">
+# Example: Check system status
+curl -X GET "https://api.ed.ac.uk/system/status" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json"
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>2. Advanced Troubleshooting Procedures</h2>
+        
+        <h3>Network Connectivity Issues</h3>
+        <div class="troubleshooting">
+            <strong>Problem:</strong> Intermittent connection drops on wireless network
+        </div>
+        
+        <p><strong>Diagnostic Steps:</strong></p>
+        <ol>
+            <li>Check signal strength: <code>netsh wlan show profiles</code></li>
+            <li>Verify authentication: <code>netsh wlan show profile "EdUni" key=clear</code></li>
+            <li>Test DNS resolution: <code>nslookup ed.ac.uk</code></li>
+            <li>Check firewall settings: <code>netsh advfirewall show allprofiles</code></li>
+        </ol>
+
+        <div class="success">
+            <strong>Solution:</strong> Update wireless drivers and reset network stack using:
+            <div class="code-block">
+netsh winsock reset
+netsh int ip reset
+ipconfig /flushdns
+            </div>
+        </div>
+
+        <h3>Authentication Problems</h3>
+        <div class="warning">
+            <strong>Important:</strong> Always verify user identity before resetting credentials
+        </div>
+        
+        <p><strong>Common Causes:</strong></p>
+        <ul>
+            <li>Expired password (90-day policy)</li>
+            <li>Account lockout due to failed attempts</li>
+            <li>Kerberos ticket corruption</li>
+            <li>Time synchronization issues</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>3. Security Protocols and Best Practices</h2>
+        
+        <h3>Password Management</h3>
+        <p>All university accounts must adhere to the following security requirements:</p>
+        
+        <div class="code-block">
+Password Complexity Rules:
+- Minimum 12 characters
+- At least 1 uppercase letter
+- At least 1 lowercase letter  
+- At least 1 number
+- At least 1 special character
+- No dictionary words
+- No personal information
+- Must be changed every 90 days
+        </div>
+
+        <h3>Two-Factor Authentication (2FA)</h3>
+        <p>Mandatory for all staff and recommended for students:</p>
+        <ol>
+            <li>Download Microsoft Authenticator app</li>
+            <li>Scan QR code during setup</li>
+            <li>Verify with backup codes</li>
+            <li>Test authentication flow</li>
+        </ol>
+
+        <div class="warning">
+            <strong>Security Alert:</strong> Never share 2FA codes or backup codes with anyone
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>4. Performance Optimization</h2>
+        
+        <h3>System Maintenance</h3>
+        <p>Regular maintenance tasks to ensure optimal performance:</p>
+        
+        <ul>
+            <li><strong>Weekly:</strong> Clear browser cache and temporary files</li>
+            <li><strong>Monthly:</strong> Run disk cleanup and defragmentation</li>
+            <li><strong>Quarterly:</strong> Update all software and drivers</li>
+            <li><strong>Annually:</strong> Full system backup and restore test</li>
+        </ul>
+
+        <h3>Network Optimization</h3>
+        <div class="code-block">
+# Windows: Optimize network settings
+netsh int tcp set global autotuninglevel=normal
+netsh int tcp set global chimney=enabled
+netsh int tcp set global rss=enabled
+
+# macOS: Reset network settings
+sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>5. Emergency Procedures</h2>
+        
+        <h3>Security Incident Response</h3>
+        <p>In case of suspected security breach:</p>
+        <ol>
+            <li><strong>Immediate:</strong> Disconnect from network</li>
+            <li><strong>Report:</strong> Contact IT Security: security@ed.ac.uk</li>
+            <li><strong>Document:</strong> Record all suspicious activity</li>
+            <li><strong>Preserve:</strong> Do not delete any files or logs</li>
+            <li><strong>Follow-up:</strong> Complete incident report form</li>
+        </ol>
+
+        <div class="troubleshooting">
+            <strong>Critical Systems Down:</strong> Contact emergency hotline immediately
+        </div>
+    </div>
+
+    <div class="contact-info">
+        <h3>📞 Contact Information</h3>
+        <p><strong>IT Helpdesk:</strong> ithelpdesk@ed.ac.uk | +44 131 651 5151</p>
+        <p><strong>Security Team:</strong> security@ed.ac.uk | +44 131 651 5152</p>
+        <p><strong>Emergency Hotline:</strong> +44 131 651 9999 (24/7)</p>
+        <p><strong>Office Hours:</strong> Monday-Friday, 9:00 AM - 5:00 PM</p>
+        <p><strong>Location:</strong> Main Library, Ground Floor, IT Support Office</p>
+    </div>
+
+    <div class="section">
+        <h2>6. Appendices</h2>
+        
+        <h3>Appendix A: Common Error Codes</h3>
+        <ul>
+            <li><strong>Error 0x80070005:</strong> Access denied - Check permissions</li>
+            <li><strong>Error 0x80070490:</strong> Element not found - Verify file paths</li>
+            <li><strong>Error 0x80070057:</strong> Invalid parameter - Check input values</li>
+            <li><strong>Error 0x80070002:</strong> File not found - Verify file existence</li>
+        </ul>
+
+        <h3>Appendix B: Useful Commands</h3>
+        <div class="code-block">
+# Windows PowerShell
+Get-ComputerInfo
+Get-NetAdapter
+Get-Service | Where-Object {$_.Status -eq "Running"}
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 10
+
+# Linux/macOS
+systemctl status
+ip addr show
+ps aux | sort -k3 -nr | head -10
+df -h
+        </div>
+    </div>
+</body>
+</html>

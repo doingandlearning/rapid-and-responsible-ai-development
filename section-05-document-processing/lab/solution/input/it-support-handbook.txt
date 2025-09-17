@@ -1,0 +1,64 @@
+IT Support Handbook
+University of Edinburgh
+
+1. Introduction to IT Support
+
+The University of Edinburgh IT Services provides comprehensive support for all students and staff. This handbook covers essential procedures, troubleshooting steps, and best practices for maintaining a secure and efficient computing environment.
+
+Key responsibilities include:
+- Responding to support requests within 24 hours
+- Maintaining up-to-date documentation
+- Following security protocols
+- Providing training and guidance
+
+2. Account Management
+
+User accounts are managed through the central identity system. All accounts must follow university naming conventions and security policies.
+
+Account Creation Process:
+1. Verify user identity and affiliation
+2. Create account with appropriate permissions
+3. Set up initial security settings
+4. Provide login credentials securely
+5. Schedule follow-up training if needed
+
+Password Requirements:
+- Minimum 12 characters
+- Mix of letters, numbers, and symbols
+- No dictionary words or personal information
+- Must be changed every 90 days
+
+3. Security Best Practices
+
+All users must follow these security guidelines:
+- Use strong, unique passwords
+- Enable two-factor authentication
+- Keep software updated
+- Report suspicious activity immediately
+- Never share credentials with others
+
+4. Troubleshooting Common Issues
+
+Problem: Cannot access university systems
+Solution: Check network connection and credentials
+- Verify you're connected to EdUni network
+- Ensure username and password are correct
+- Check if account is locked or expired
+
+Problem: Software installation fails
+Solution: Check permissions and system requirements
+- Verify you have installation rights
+- Check system compatibility
+- Contact IT support for assistance
+
+5. Contact Information
+
+IT Support Helpdesk:
+- Email: ithelpdesk@ed.ac.uk
+- Phone: +44 131 651 5151
+- Hours: Monday-Friday, 9am-5pm
+
+Emergency Support:
+- Available 24/7 for critical issues
+- Contact via emergency hotline
+- Escalation procedures in place
