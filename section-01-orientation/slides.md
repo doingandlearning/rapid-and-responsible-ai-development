@@ -6,8 +6,6 @@
 
 ## Welcome! 👋
 
-<span class="fragment">You're about to build something **amazing**.</span>
-
 <span class="fragment">By the end of these 3 days, you'll have:</span>
 
 - <span class="fragment">A complete **AI-powered search system** for institutional use</span>
@@ -157,33 +155,6 @@
 <span class="fragment">✅ **Privacy**: Sensitive data never leaves your network</span>
 <span class="fragment">✅ **Cost**: No per-token charges</span>
 <span class="fragment">✅ **Control**: You own the embedding process</span>
-
----
-
-## Success Criteria: What "Done" Looks Like
-
-### **By End of Day 1:**
-
-<span class="fragment">✅ Environment running smoothly</span>
-<span class="fragment">✅ First vector stored and queried</span>
-<span class="fragment">✅ Understanding of core concepts</span>
-
-### **By End of Day 2:**
-
-<span class="fragment">✅ Complete RAG pipeline working</span>
-<span class="fragment">✅ Real documents searchable</span>
-<span class="fragment">✅ LLM providing contextual answers</span>
-
----
-
-## Success Criteria: What "Done" Looks Like
-
-### **By End of Day 3:**
-
-<span class="fragment">✅ Full AI support system deployed</span>
-<span class="fragment">✅ Ethical considerations implemented</span>
-<span class="fragment">✅ Technical evaluation framework complete</span>
-<span class="fragment">✅ Implementation roadmap for Edinburgh systems</span>
 
 ---
 

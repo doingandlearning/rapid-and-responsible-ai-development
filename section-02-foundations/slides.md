@@ -3,15 +3,7 @@
 
 ---
 
-## Quick Check-In
-
-**From Section 1, what questions do you have about those 1024 numbers?**
-
-<span class="fragment">*30 seconds to think, then share one question with your neighbor*</span>
-
----
-
-## Today's Journey
+## Journey
 
 <span class="fragment">🎯 **Tokens** - How AI "sees" text</span>
 
@@ -346,88 +338,7 @@ C: [-0.2, 0.1, 0.8]  (negative, low, high)
 
 ---
 
-# Part 4: LLM Jeopardy!
-## Test Your Growing Knowledge
-
----
-
-## LLM Jeopardy Rules
-
-<span class="fragment">**Teams of 3-4 people**</span>
-
-<span class="fragment">**Categories:** Tokens, Embeddings, Edinburgh AI, Common Sense</span>
-
-<span class="fragment">**Points:** 100, 200, 300, 400, 500</span>
-
-<span class="fragment">**5 minutes to play!**</span>
-
----
-
-## Tokens - 100
-
-**This is what AI models actually process instead of letters and words.**
-
-<span class="fragment">*What are tokens?*</span>
-
----
-
-## Tokens - 200
-
-**This happens to rare or specialized words when they get tokenized.**
-
-<span class="fragment">*What is they get split into multiple tokens?*</span>
-
----
-
-## Tokens - 300
-
-**This is why "AI" might cost less than "artificial intelligence" to process.**
-
-<span class="fragment">*What is AI uses fewer tokens?*</span>
-
----
-
-## Embeddings - 100
-
-**This is how many dimensions the BGE-M3 model creates for each piece of text.**
-
-<span class="fragment">*What is 1024?*</span>
-
----
-
-## Embeddings - 200
-
-**Similar text gets this type of embedding values.**
-
-<span class="fragment">*What are similar/close values?*</span>
-
----
-
-## Edinburgh AI - 100
-
-**This type of university document would benefit most from semantic search.**
-
-<span class="fragment">*What are policy documents/procedures/technical documentation?*</span>
-
----
-
-## Edinburgh AI - 200
-
-**This Edinburgh service area probably handles the most repetitive questions that AI could help with.**
-
-<span class="fragment">*What is student support/IT help desk?*</span>
-
----
-
-## Common Sense - 100
-
-**This is what you call it when an AI confidently states incorrect information.**
-
-<span class="fragment">*What is hallucination?*</span>
-
----
-
-# Part 4: Embeddings vs Completions
+# Part 3: Embeddings vs Completions
 ## Two Different Jobs
 
 ---
@@ -460,14 +371,6 @@ C: [-0.2, 0.1, 0.8]  (negative, low, high)
 
 ---
 
-## Interactive Demo
-
-**Let's try both with the same text:**
-
-<span class="fragment">*"I need help with my email settings"*</span>
-
----
-
 ## Activity: Job Assignment
 
 **Work in pairs - 2 minutes**
@@ -487,7 +390,7 @@ C: [-0.2, 0.1, 0.8]  (negative, low, high)
 
 ---
 
-# Part 5: RAG Architecture
+# Part 4: RAG Architecture
 ## Putting It All Together
 
 ---
@@ -539,7 +442,7 @@ User: "How do I book a room?"
 
 ---
 
-# Part 6: Common Failure Modes
+# Part 5: Common Failure Modes
 ## What Goes Wrong?
 
 ---
