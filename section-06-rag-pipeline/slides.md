@@ -117,12 +117,12 @@ def search_similar_chunks(query: str, limit: int = 5) -> List[Dict]:
                     document_title,
                     page_number,
                     section_title,
-                    1 - (embedding <=> %s::vector) as similarity_score
+                    1 - (embedding <=> %s) as similarity
                 FROM document_chunks
                 WHERE embedding IS NOT NULL
-                ORDER BY embedding <=> %s::vector
+                ORDER BY similarity 
                 LIMIT %s;
-            """, (query_embedding, query_embedding, limit))
+            """, (json.dumps(query_embedding), limit))
 
             results = cur.fetchall()
 

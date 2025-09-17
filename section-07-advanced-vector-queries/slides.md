@@ -6,9 +6,6 @@
 
 ## Section Overview
 
-**Time:** 90 minutes  
-**Format:** 45 min presentation + 45 min hands-on lab
-
 **Learning Goals:**
 - Master hybrid queries combining vector similarity + relational filters
 - Implement advanced search patterns for production use cases  
