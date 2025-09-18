@@ -1,15 +1,15 @@
 def fixed_size_chunker(text, chunk_size, overlap):
   words = text.split()
   # List comprehension
-  chunks = [" ".join(words[i: i + chunk_size]) for i in range(0, len(words), chunk_size - overlap)]
-  return chunks
+  # chunks = [" ".join(words[i: i + chunk_size]) for i in range(0, len(words), chunk_size - overlap)]
+  # return chunks
 
   # For loop
   chunks = []
   for i in range(0, len(words), chunk_size - overlap):
     chunk = words[i: i + chunk_size]
     chunks.append(" ".join(chunk)) 
-
+  print(chunks)
   return chunks
 
   # Generator
@@ -192,8 +192,8 @@ def analyze_chunk_quality(chunks):
     if not chunks:
         return {"error": "No chunks to analyze"}
     
-    word_counts = [c.word_count for c in chunks]
-    
+    word_counts = [len(c) for c in chunks]
+    print(word_counts)
     # Calculate statistics
     avg_words = sum(word_counts) / len(word_counts)
     min_words = min(word_counts)
@@ -226,3 +226,7 @@ def analyze_chunk_quality(chunks):
         "broken_sentences": broken_sentences,
         "quality_score": max(0, round(quality_score, 1))
     }
+
+chunks =  fixed_size_chunker(sample_text, 200, 50)
+print(chunks)
+print(analyze_chunk_quality(chunks))

@@ -183,7 +183,7 @@ def demonstrate_fixed_chunking():
             document_title="IT Security Policy 2024",
             page_number=1,
             chunk_size=chunk_size,
-            overlap=50
+            overlap=int(chunk_size * 0.25)
         )
         
         quality = analyze_chunk_quality(chunks)
