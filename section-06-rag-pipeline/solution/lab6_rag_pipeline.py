@@ -6,7 +6,6 @@ Edinburgh University AI-Powered IT Support System
 
 import psycopg
 import requests
-import openai
 import json
 import time
 import statistics
@@ -28,6 +27,7 @@ DB_CONFIG = {
 OLLAMA_URL = "http://localhost:11434/api/embed"
 EMBEDDING_MODEL = "bge-m3"
 OPENAI_API_KEY = "your-api-key-here"  # Replace with actual key
+OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
 
 @dataclass
 class SearchResult:
@@ -197,22 +197,43 @@ User Question: {query}
 Please provide a helpful, accurate answer based on the context above. Remember to cite your sources."""
 
     try:
-        client = openai.Client(api_key=api_key)
-        
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
+        # Prepare the request payload
+        payload = {
+            "model": "gpt-3.5-turbo",
+            "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
-            temperature=0.1,
-            max_tokens=600,
-            top_p=0.9
+            "temperature": 0.1,
+            "max_tokens": 600,
+            "top_p": 0.9
+        }
+        
+        # Prepare headers
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        # Make the API request
+        response = requests.post(
+            OPENAI_API_URL,
+            headers=headers,
+            json=payload,
+            timeout=30
         )
         
-        answer = response.choices[0].message.content
-        tokens_used = response.usage.total_tokens
-        cost_estimate = tokens_used * 0.000002
+        # Check for HTTP errors
+        response.raise_for_status()
+        
+        # Parse the response
+        response_data = response.json()
+        
+        # Extract the answer and usage information
+        answer = response_data['choices'][0]['message']['content']
+        usage = response_data.get('usage', {})
+        tokens_used = usage.get('total_tokens', 0)
+        cost_estimate = tokens_used * 0.000002  # Approximate cost for gpt-3.5-turbo
         
         print(f"✅ Generated response: {len(answer)} characters, {tokens_used} tokens")
         
@@ -224,21 +245,40 @@ Please provide a helpful, accurate answer based on the context above. Remember t
             'success': True
         }
         
-    except openai.RateLimitError:
-        return {
-            'answer': "I'm currently experiencing high demand. Please try again in a moment.",
-            'tokens_used': 0,
-            'cost_estimate': 0,
-            'error': 'rate_limit',
-            'success': False
-        }
+    except requests.exceptions.HTTPError as e:
+        if e.response.status_code == 429:
+            return {
+                'answer': "I'm currently experiencing high demand. Please try again in a moment.",
+                'tokens_used': 0,
+                'cost_estimate': 0,
+                'error': 'rate_limit',
+                'success': False
+            }
+        elif e.response.status_code == 401:
+            return {
+                'answer': "Authentication issue with AI service. Please contact IT support.",
+                'tokens_used': 0,
+                'cost_estimate': 0,
+                'error': 'authentication',
+                'success': False
+            }
+        else:
+            print(f"❌ OpenAI API HTTP error: {e}")
+            return {
+                'answer': f"I'm experiencing technical difficulties (HTTP {e.response.status_code}). Please try again or contact IT Services at 0131 650 4500.",
+                'tokens_used': 0,
+                'cost_estimate': 0,
+                'error': f'http_error_{e.response.status_code}',
+                'success': False
+            }
         
-    except openai.AuthenticationError:
+    except requests.exceptions.RequestException as e:
+        print(f"❌ OpenAI API request error: {e}")
         return {
-            'answer': "Authentication issue with AI service. Please contact IT support.",
+            'answer': "I'm experiencing network difficulties. Please try again or contact IT Services at 0131 650 4500.",
             'tokens_used': 0,
             'cost_estimate': 0,
-            'error': 'authentication',
+            'error': 'network_error',
             'success': False
         }
         

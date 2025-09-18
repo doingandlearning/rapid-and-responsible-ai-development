@@ -31,6 +31,9 @@ python -c "import psycopg; conn = psycopg.connect('postgresql://postgres:postgre
 
 # Set OpenAI API key (provided during course)
 export OPENAI_API_KEY="your-api-key-here"
+
+# Install required dependencies (no OpenAI library needed)
+pip install psycopg requests flask
 ```
 
 ### Execute Complete Solution
@@ -199,6 +202,38 @@ Successfully built Edinburgh's AI-powered IT support system:
 
 ## Understanding the Implementation
 
+### Direct API Calls vs OpenAI Library
+
+This implementation uses **direct HTTP API calls** instead of the OpenAI Python library, providing several advantages:
+
+#### Benefits of Direct API Calls:
+- **Transparency**: You can see exactly what's being sent to the API
+- **Control**: Full control over request headers, timeouts, and error handling
+- **Debugging**: Easier to debug API issues with raw HTTP requests
+- **Flexibility**: Can easily modify requests for different models or endpoints
+- **Dependencies**: Fewer external dependencies (no OpenAI library required)
+- **Learning**: Better understanding of how the API actually works
+
+#### Implementation Details:
+```python
+# Direct API call approach
+payload = {
+    "model": "gpt-3.5-turbo",
+    "messages": [{"role": "system", "content": system_prompt}],
+    "temperature": 0.1,
+    "max_tokens": 600
+}
+
+headers = {
+    "Authorization": f"Bearer {api_key}",
+    "Content-Type": "application/json"
+}
+
+response = requests.post(OPENAI_API_URL, headers=headers, json=payload)
+response.raise_for_status()
+data = response.json()
+```
+
 ### Key Components
 
 #### 1. Complete RAG Pipeline
@@ -250,7 +285,7 @@ def assemble_context(search_results: List[SearchResult]) -> tuple:
     return "\n".join(context_parts), sources
 ```
 
-#### 4. OpenAI Integration with Edinburgh Context
+#### 4. OpenAI Integration with Direct API Calls
 ```python
 def generate_llm_response(query: str, context: str, api_key: str):
     system_prompt = """You are an AI assistant for Edinburgh University's IT Services.
@@ -260,14 +295,32 @@ def generate_llm_response(query: str, context: str, api_key: str):
     - Use professional language appropriate for university staff
     - Focus on practical, actionable guidance"""
     
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
+    # Prepare the request payload
+    payload = {
+        "model": "gpt-3.5-turbo",
+        "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"Context: {context}\n\nQuestion: {query}"}
         ],
-        temperature=0.1  # Low temperature for factual accuracy
+        "temperature": 0.1,
+        "max_tokens": 600
+    }
+    
+    # Make direct API call
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    
+    response = requests.post(
+        "https://api.openai.com/v1/chat/completions",
+        headers=headers,
+        json=payload,
+        timeout=30
     )
+    
+    response.raise_for_status()
+    return response.json()
 ```
 
 #### 5. Quality Control and Confidence Scoring
@@ -341,15 +394,21 @@ print(f'Chunks with embeddings: {cur.fetchone()[0]}')
 # Verify API key is set correctly
 echo $OPENAI_API_KEY
 
-# Test API key validity
+# Test API key validity with direct API call
 python -c "
-import openai
-client = openai.Client(api_key='$OPENAI_API_KEY')
-try:
-    client.models.list()
+import requests
+import os
+api_key = os.getenv('OPENAI_API_KEY')
+if not api_key:
+    print('❌ OPENAI_API_KEY not set')
+    exit(1)
+
+headers = {'Authorization': f'Bearer {api_key}'}
+response = requests.get('https://api.openai.com/v1/models', headers=headers)
+if response.status_code == 200:
     print('✅ API key is valid')
-except:
-    print('❌ API key is invalid')
+else:
+    print(f'❌ API key is invalid: {response.status_code}')
 "
 ```
 
@@ -371,6 +430,19 @@ results = search_similar_chunks(query, similarity_threshold=0.4)
 query_embedding = get_embedding("test query")
 print(f"Embedding dimensions: {len(query_embedding)}")
 print(f"Sample values: {query_embedding[:5]}")
+
+# Test API response directly
+import requests
+headers = {'Authorization': f'Bearer {api_key}'}
+payload = {
+    "model": "gpt-3.5-turbo",
+    "messages": [{"role": "user", "content": "Test message"}],
+    "max_tokens": 50
+}
+response = requests.post(OPENAI_API_URL, headers=headers, json=payload)
+print(f"API Response: {response.status_code}")
+if response.status_code == 200:
+    print(f"Response content: {response.json()}")
 ```
 
 ### Performance Optimization
