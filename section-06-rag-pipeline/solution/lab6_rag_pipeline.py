@@ -9,6 +9,8 @@ import requests
 import json
 import time
 import statistics
+import argparse
+import sys
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 from datetime import datetime
@@ -628,8 +630,53 @@ def create_rag_web_interface():
     
     return app
 
+def start_web_interface(port: int = 5100, debug: bool = True):
+    """Start the web interface for interactive testing."""
+    print("🌐 Starting Edinburgh IT Support Web Interface...")
+    print(f"   Port: {port}")
+    print(f"   Debug mode: {debug}")
+    print(f"   URL: http://localhost:{port}")
+    print("\n" + "="*60)
+    print("🚀 Web interface is running!")
+    print("   Press Ctrl+C to stop the server")
+    print("="*60)
+    
+    # Validate system before starting web interface
+    print("\n🔍 Validating system before starting web interface...")
+    validation_results = validate_rag_system()
+    
+    if validation_results["status"] != "passed":
+        print("❌ System validation failed. Please check configuration.")
+        print("   Make sure PostgreSQL is running and Section 5 data is available.")
+        return 1
+    
+    print("✅ System validation passed - starting web interface")
+    
+    # Create and start the web app
+    app = create_rag_web_interface()
+    app.run(host='0.0.0.0', port=port, debug=debug)
+
 def main():
     """Main RAG system demonstration and testing."""
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Edinburgh University RAG Pipeline')
+    parser.add_argument('--web', action='store_true', 
+                       help='Start web interface instead of running tests')
+    parser.add_argument('--port', type=int, default=5100,
+                       help='Port for web interface (default: 5100)')
+    parser.add_argument('--debug', action='store_true', default=True,
+                       help='Enable debug mode for web interface')
+    parser.add_argument('--no-debug', action='store_true',
+                       help='Disable debug mode for web interface')
+    
+    args = parser.parse_args()
+    
+    # If web interface requested, start it
+    if args.web:
+        debug_mode = args.debug and not args.no_debug
+        return start_web_interface(port=args.port, debug=debug_mode)
+    
+    # Otherwise run the normal demonstration
     print("🚀 SECTION 6: RAG PIPELINE INTEGRATION")
     print("="*80)
     print("Edinburgh University AI-Powered IT Support System\n")
@@ -723,8 +770,8 @@ def main():
     web_app = create_rag_web_interface()
     print("🌐 Web interface created successfully!")
     print("To test the web interface:")
-    print("   1. Run: python lab6_rag_pipeline.py")
-    print("   2. In another terminal: python -c \"from lab6_rag_pipeline import create_rag_web_interface; create_rag_web_interface().run(debug=True, port=5100)\"")
+    print("   1. Run: python lab6_rag_pipeline.py --web")
+    print("   2. Or run: python lab6_rag_pipeline.py --web --port 5100")
     print("   3. Visit: http://localhost:5100")
     
     # Summary

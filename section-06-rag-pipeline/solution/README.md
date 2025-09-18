@@ -44,8 +44,14 @@ python lab6_rag_pipeline.py
 
 ### Optional: Run Web Interface
 ```bash
-# In a separate terminal, after running the main solution
-python -c "from lab6_rag_pipeline import create_rag_web_interface; create_rag_web_interface().run(debug=True, port=5100)"
+# Method 1: Start web interface directly
+python lab6_rag_pipeline.py --web
+
+# Method 2: Start web interface on custom port
+python lab6_rag_pipeline.py --web --port 8080
+
+# Method 3: Use the standalone script
+python start_web_interface.py
 
 # Then visit: http://localhost:5100
 ```
@@ -478,6 +484,31 @@ The web interface provides:
 - **Source citation display** for verification
 - **Confidence level indicators** for quality assessment
 - **Professional Edinburgh University styling**
+
+### Starting the Web Interface
+Multiple ways to start the web interface:
+
+```bash
+# Method 1: Command line argument
+python lab6_rag_pipeline.py --web
+
+# Method 2: Custom port
+python lab6_rag_pipeline.py --web --port 8080
+
+# Method 3: Standalone script
+python start_web_interface.py
+
+# Method 4: Disable debug mode for production
+python lab6_rag_pipeline.py --web --no-debug
+```
+
+### Web Interface Screenshots
+The interface includes:
+- **Clean, professional design** with Edinburgh University branding
+- **Real-time chat** with question/answer display
+- **Source citations** showing document references
+- **Confidence indicators** (✅ High, ⚠️ Medium, ❓ Low, ❌ Insufficient)
+- **Response time display** for performance monitoring
 
 ### API Endpoints
 ```python
