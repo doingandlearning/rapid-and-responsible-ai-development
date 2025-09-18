@@ -1,3 +1,8 @@
+# Rapid and Responsible AI Development
+
+- Kevin Cunningham (kevin@kevincunningham.co.uk)
+- Miro Board: https://miro.com/app/board/uXjVJHYx0lo=/?share_link_id=562555202830
+
 ## Course at-a-Glance
 
 | Item             | Details                                                                                                                                                                                                                  |
@@ -12,25 +17,25 @@
 
 ## Section & Learning-Objective Outline
 
-| #      | Section                                       | Key learning objectives & labs                                                                                                                                        |
-| ------ | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **1**  | Orientation & Outcomes                        | Map the journey (architecture → vector workflows → ethics). Deliverables & success criteria.                                                                          |
-| **2**  | Gen-AI & LLM Foundations                      | Tokens, embeddings vs. completions, RAG, common failure modes.                                                                                                        |
-| **3**  | Architecture & Vocabulary                     | Components: Ollama embeddings ↔ pgvector ↔ JSON/relational data ↔ remote Completion API.                                                                              |
-| **4**  | Vector Database Complete Implementation       | *Lab:* Setup PostgreSQL+pgvector, create optimized schema, generate embeddings via Ollama, store documents with vectors, create HNSW indexes, test performance.      |
-| **5**  | Document Processing & PDF Chunking            | *Lab:* Extract text from PDFs, implement chunking strategies (fixed-size, semantic, sliding window), handle metadata preservation, optimize chunk size for embeddings. |
-| **6**  | RAG Pipeline Integration                      | k-NN/cosine search with HNSW, assemble context, `POST` to remote `/v1/chat/completions`. *Lab:* build a context-aware Q\&A micro-service that cites its sources.      |
-| **6.5**| Model Context Protocol (MCP)                  | Extend LLMs with structured tools for document querying. *Lab:* build MCP server with semantic search, document retrieval, and analysis tools.                           |
-| **7**  | Advanced Vector Queries                       | Blend JSONB, relational filters, and vector distance in one SQL statement. *Lab:* craft hybrid queries for complex use-cases.                                         |
-| **8**  | Production Deployment                         | Scaling, monitoring, security, performance optimization. *Lab:* production-ready configuration and deployment strategies.                                              |
-| **9**  | AI Ethics & Governance                        | UK-GDPR, UoE guidelines, model cards, PII masking, audit logging.                                                                                                     |
-| **10** | Capstone Lab – Student Support Chatbot        | Deploy Ollama + pgvector + remote completion API, ingest course handbooks, expose REST chat endpoint & minimal React UI; measure relevance/latency; present findings. |
-| **11** | Wrap-Up & Next Steps                          | Key takeaways, repo hand-off, future learning paths (fine-tuning, multimodal, eval frameworks).                                                                       |
+| #       | Section                                 | Key learning objectives & labs                                                                                                                                         |
+| ------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **1**   | Orientation & Outcomes                  | Map the journey (architecture → vector workflows → ethics). Deliverables & success criteria.                                                                           |
+| **2**   | Gen-AI & LLM Foundations                | Tokens, embeddings vs. completions, RAG, common failure modes.                                                                                                         |
+| **3**   | Architecture & Vocabulary               | Components: Ollama embeddings ↔ pgvector ↔ JSON/relational data ↔ remote Completion API.                                                                               |
+| **4**   | Vector Database Complete Implementation | _Lab:_ Setup PostgreSQL+pgvector, create optimized schema, generate embeddings via Ollama, store documents with vectors, create HNSW indexes, test performance.        |
+| **5**   | Document Processing & PDF Chunking      | _Lab:_ Extract text from PDFs, implement chunking strategies (fixed-size, semantic, sliding window), handle metadata preservation, optimize chunk size for embeddings. |
+| **6**   | RAG Pipeline Integration                | k-NN/cosine search with HNSW, assemble context, `POST` to remote `/v1/chat/completions`. _Lab:_ build a context-aware Q\&A micro-service that cites its sources.       |
+| **6.5** | Model Context Protocol (MCP)            | Extend LLMs with structured tools for document querying. _Lab:_ build MCP server with semantic search, document retrieval, and analysis tools.                         |
+| **7**   | Advanced Vector Queries                 | Blend JSONB, relational filters, and vector distance in one SQL statement. _Lab:_ craft hybrid queries for complex use-cases.                                          |
+| **8**   | Production Deployment                   | Scaling, monitoring, security, performance optimization. _Lab:_ production-ready configuration and deployment strategies.                                              |
+| **9**   | AI Ethics & Governance                  | UK-GDPR, UoE guidelines, model cards, PII masking, audit logging.                                                                                                      |
+| **10**  | Capstone Lab – Student Support Chatbot  | Deploy Ollama + pgvector + remote completion API, ingest course handbooks, expose REST chat endpoint & minimal React UI; measure relevance/latency; present findings.  |
+| **11**  | Wrap-Up & Next Steps                    | Key takeaways, repo hand-off, future learning paths (fine-tuning, multimodal, eval frameworks).                                                                        |
 
 ---
 
 ### Why this approach?
 
-* **PostgreSQL + pgvector** keeps the data model familiar to teams already working with MySQL/MSSQL while adding efficient similarity search.
-* **Ollama for embeddings** means everything sensitive stays on-prem; only prompts (without source docs) leave the network for completion calls.
-* **Docker-only install** minimises friction: each student spins up Postgres, Ollama, and the sample FastAPI app with `docker-compose up`.
+- **PostgreSQL + pgvector** keeps the data model familiar to teams already working with MySQL/MSSQL while adding efficient similarity search.
+- **Ollama for embeddings** means everything sensitive stays on-prem; only prompts (without source docs) leave the network for completion calls.
+- **Docker-only install** minimises friction: each student spins up Postgres, Ollama, and the sample FastAPI app with `docker-compose up`.
