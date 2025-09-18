@@ -1,0 +1,229 @@
+# API Documentation
+
+## Authentication
+
+All API requests require authentication using an API key. Include your API key in the request header:
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Base URL
+
+All API endpoints are relative to the base URL:
+```
+https://api.example.com/v1
+```
+
+## Rate Limiting
+
+API requests are limited to 1000 requests per hour per API key. Rate limit information is included in response headers:
+
+- `X-RateLimit-Limit`: Maximum requests per hour
+- `X-RateLimit-Remaining`: Remaining requests in current hour
+- `X-RateLimit-Reset`: Time when the rate limit resets
+
+## Error Handling
+
+The API uses standard HTTP status codes and returns errors in JSON format:
+
+```json
+{
+  "error": {
+    "code": "INVALID_REQUEST",
+    "message": "The request is invalid",
+    "details": "Missing required parameter: user_id"
+  }
+}
+```
+
+## Endpoints
+
+### Users
+
+#### GET /users
+
+Retrieve a list of users.
+
+**Parameters:**
+- `limit` (optional): Number of users to return (default: 20, max: 100)
+- `offset` (optional): Number of users to skip (default: 0)
+- `status` (optional): Filter by user status (`active`, `inactive`, `pending`)
+
+**Example Request:**
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     "https://api.example.com/v1/users?limit=10&status=active"
+```
+
+**Example Response:**
+```json
+{
+  "data": [
+    {
+      "id": "user_123",
+      "email": "john@example.com",
+      "name": "John Doe",
+      "status": "active",
+      "created_at": "2023-01-15T10:30:00Z",
+      "updated_at": "2023-01-15T10:30:00Z"
+    }
+  ],
+  "pagination": {
+    "total": 150,
+    "limit": 10,
+    "offset": 0,
+    "has_more": true
+  }
+}
+```
+
+#### POST /users
+
+Create a new user.
+
+**Request Body:**
+```json
+{
+  "email": "jane@example.com",
+  "name": "Jane Smith",
+  "password": "secure_password"
+}
+```
+
+**Example Response:**
+```json
+{
+  "data": {
+    "id": "user_124",
+    "email": "jane@example.com",
+    "name": "Jane Smith",
+    "status": "pending",
+    "created_at": "2023-01-15T11:00:00Z",
+    "updated_at": "2023-01-15T11:00:00Z"
+  }
+}
+```
+
+#### GET /users/{user_id}
+
+Retrieve a specific user by ID.
+
+**Parameters:**
+- `user_id` (path): The unique identifier for the user
+
+**Example Request:**
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     "https://api.example.com/v1/users/user_123"
+```
+
+**Example Response:**
+```json
+{
+  "data": {
+    "id": "user_123",
+    "email": "john@example.com",
+    "name": "John Doe",
+    "status": "active",
+    "profile": {
+      "age": 30,
+      "location": "New York",
+      "bio": "Software developer"
+    },
+    "created_at": "2023-01-15T10:30:00Z",
+    "updated_at": "2023-01-15T10:30:00Z"
+  }
+}
+```
+
+### Products
+
+#### GET /products
+
+Retrieve a list of products.
+
+**Parameters:**
+- `category` (optional): Filter by product category
+- `price_min` (optional): Minimum price filter
+- `price_max` (optional): Maximum price filter
+- `in_stock` (optional): Filter by availability (true/false)
+
+**Example Request:**
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     "https://api.example.com/v1/products?category=electronics&in_stock=true"
+```
+
+**Example Response:**
+```json
+{
+  "data": [
+    {
+      "id": "prod_456",
+      "name": "Wireless Headphones",
+      "category": "electronics",
+      "price": 99.99,
+      "currency": "USD",
+      "in_stock": true,
+      "description": "High-quality wireless headphones with noise cancellation",
+      "images": [
+        "https://example.com/images/headphones1.jpg",
+        "https://example.com/images/headphones2.jpg"
+      ],
+      "created_at": "2023-01-10T09:00:00Z"
+    }
+  ],
+  "pagination": {
+    "total": 25,
+    "limit": 20,
+    "offset": 0,
+    "has_more": true
+  }
+}
+```
+
+## Webhooks
+
+The API supports webhooks for real-time notifications. Configure webhook endpoints in your account settings.
+
+### Webhook Events
+
+- `user.created`: Triggered when a new user is created
+- `user.updated`: Triggered when a user is updated
+- `user.deleted`: Triggered when a user is deleted
+- `product.created`: Triggered when a new product is created
+- `product.updated`: Triggered when a product is updated
+
+### Webhook Payload
+
+Webhook payloads include the event type and relevant data:
+
+```json
+{
+  "event": "user.created",
+  "timestamp": "2023-01-15T10:30:00Z",
+  "data": {
+    "id": "user_123",
+    "email": "john@example.com",
+    "name": "John Doe"
+  }
+}
+```
+
+## SDKs
+
+Official SDKs are available for popular programming languages:
+
+- **Python**: `pip install example-api-python`
+- **JavaScript**: `npm install example-api-js`
+- **PHP**: `composer require example/api-php`
+- **Ruby**: `gem install example-api-ruby`
+
+## Support
+
+For API support and questions:
+
+- **Documentation**: https://docs.example.com
+- **Email**: api-support@example.com
+- **Status Page**: https://status.example.com

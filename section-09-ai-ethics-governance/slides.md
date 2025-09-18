@@ -6,9 +6,6 @@
 
 ## Section Overview
 
-**Time:** 90 minutes  
-**Format:** 45 min presentation + 45 min hands-on lab
-
 **Learning Goals:**
 - Implement comprehensive AI ethics frameworks for university environments
 - Establish governance procedures for responsible AI deployment and monitoring
@@ -28,6 +25,8 @@ Your production vector search system can:
 - Provide accurate, relevant results
 - Scale across Edinburgh's campuses
 
+---
+
 But can it:
 - Ensure fair access for all users?
 - Protect privacy and maintain trust?
@@ -35,8 +34,6 @@ But can it:
 - Align with university values and mission?
 
 ---
-
-## The Stakes for Universities
 
 ### Institutional Responsibility
 
@@ -46,6 +43,8 @@ But can it:
 - Public sector accountability requirements
 - Research integrity and academic freedom principles
 - Long-term institutional reputation
+
+---
 
 **One biased search result can:**
 - Affect academic opportunities unfairly
@@ -58,6 +57,8 @@ But can it:
 ## What is AI Ethics in Practice?
 
 ### Moving Beyond Principles to Implementation
+
+---
 
 **Not just "be good"** - but systematic approaches to:
 
@@ -82,6 +83,8 @@ University Values + Technical Capabilities + Regulatory Requirements
         Practical Policies + Monitoring + Continuous Improvement
 ```
 
+---
+
 **Core Components:**
 1. **Ethical AI Principles** aligned with university mission
 2. **Risk Assessment Framework** for AI deployment decisions
@@ -95,15 +98,21 @@ University Values + Technical Capabilities + Regulatory Requirements
 
 ### Where Bias Enters Vector Search Systems
 
+---
+
 **Training Data Bias:**
 - Historical documents may reflect past inequities
 - Underrepresentation of certain groups or perspectives
 - Language biases embedded in source materials
 
+---
+
 **Algorithm Design Bias:**
 - Similarity metrics that favor certain writing styles
 - Ranking algorithms that perpetuate existing patterns
 - Feature selection that disadvantages specific content
+
+---
 
 **Usage Pattern Bias:**
 - Different departments having unequal search success
@@ -116,15 +125,21 @@ University Values + Technical Capabilities + Regulatory Requirements
 
 ### University Search System Scenarios
 
+---
+
 **Scenario 1: Academic Search Bias**
 - Search for "leadership opportunities" returns mostly male-authored content
 - Historical bias in leadership documentation affects current results
 - Impact: Female students see fewer role models and opportunities
 
+---
+
 **Scenario 2: Departmental Content Bias**
 - IT Services documents consistently rank higher than Student Services
 - Result: Students struggle to find support resources they need
 - Cause: IT Services documents are more technical, match embedding patterns better
+
+---
 
 **Scenario 3: Campus Location Bias**
 - King's Buildings content dominates results for scientific queries
@@ -173,20 +188,28 @@ def fairness_audit(user_queries, system_responses):
 
 ### Technical and Procedural Approaches
 
+---
+
 **1. Data-Level Mitigation:**
 - Diverse content curation and representation auditing
 - Balanced training data across demographics and departments
 - Historical bias correction through content weighting
+
+---
 
 **2. Algorithm-Level Mitigation:**
 - Fairness constraints in ranking algorithms
 - Bias-aware similarity metrics and scoring functions
 - Regular algorithm auditing and adjustment procedures
 
+---
+
 **3. System-Level Mitigation:**
 - Multi-perspective result presentation
 - User feedback loops for bias detection
 - A/B testing for fairness improvements
+
+---
 
 **4. Process-Level Mitigation:**
 - Diverse development and review teams

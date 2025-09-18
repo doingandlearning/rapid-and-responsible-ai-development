@@ -4,42 +4,42 @@
 
 ### Basic Operators
 
-| Operator | Description | Example | Result |
-|----------|-------------|---------|--------|
-| `->` | Get JSON object field as JSON | `'{"a":1}'::jsonb -> 'a'` | `1` |
-| `->>` | Get JSON object field as text | `'{"a":1}'::jsonb ->> 'a'` | `"1"` |
-| `#>` | Get JSON object at path as JSON | `'{"a":{"b":1}}'::jsonb #> '{a,b}'` | `1` |
-| `#>>` | Get JSON object at path as text | `'{"a":{"b":1}}'::jsonb #>> '{a,b}'` | `"1"` |
+| Operator | Description                     | Example                              | Result |
+| -------- | ------------------------------- | ------------------------------------ | ------ |
+| `->`     | Get JSON object field as JSON   | `'{"a":1}'::jsonb -> 'a'`            | `1`    |
+| `->>`    | Get JSON object field as text   | `'{"a":1}'::jsonb ->> 'a'`           | `"1"`  |
+| `#>`     | Get JSON object at path as JSON | `'{"a":{"b":1}}'::jsonb #> '{a,b}'`  | `1`    |
+| `#>>`    | Get JSON object at path as text | `'{"a":{"b":1}}'::jsonb #>> '{a,b}'` | `"1"`  |
 
 ### Existence Operators
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `?` | Does key exist? | `'{"a":1}'::jsonb ? 'a'` → `true` |
-| `?|` | Do any keys exist? | `'{"a":1}'::jsonb ?| array['a','b']` → `true` |
-| `?&` | Do all keys exist? | `'{"a":1}'::jsonb ?& array['a','b']` → `false` |
+| Operator | Description        | Example                                        |
+| -------- | ------------------ | ---------------------------------------------- | ---------------------- |
+| `?`      | Does key exist?    | `'{"a":1}'::jsonb ? 'a'` → `true`              |
+| `?\|`    | Do any keys exist? | `'{"a":1}'::jsonb ?                            | array['a','b']`→`true` |
+| `?&`     | Do all keys exist? | `'{"a":1}'::jsonb ?& array['a','b']` → `false` |
 
 ### Containment Operators
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `@>` | Contains (left contains right) | `'{"a":1,"b":2}'::jsonb @> '{"a":1}'` → `true` |
-| `<@` | Contained by (left contained in right) | `'{"a":1}'::jsonb <@ '{"a":1,"b":2}'` → `true` |
+| Operator | Description                            | Example                                        |
+| -------- | -------------------------------------- | ---------------------------------------------- |
+| `@>`     | Contains (left contains right)         | `'{"a":1,"b":2}'::jsonb @> '{"a":1}'` → `true` |
+| `<@`     | Contained by (left contained in right) | `'{"a":1}'::jsonb <@ '{"a":1,"b":2}'` → `true` |
 
 ### Path Operators (PostgreSQL 12+)
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `@?` | Does path exist? | `'{"a":{"b":1}}'::jsonb @? '$.a.b'` → `true` |
-| `@@` | Does path match predicate? | `'{"a":2}'::jsonb @@ '$.a > 1'` → `true` |
+| Operator | Description                | Example                                      |
+| -------- | -------------------------- | -------------------------------------------- |
+| `@?`     | Does path exist?           | `'{"a":{"b":1}}'::jsonb @? '$.a.b'` → `true` |
+| `@@`     | Does path match predicate? | `'{"a":2}'::jsonb @@ '$.a > 1'` → `true`     |
 
 ### Modification Operators
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `\|\|` | Concatenate/merge | `'{"a":1}'::jsonb \|\| '{"b":2}'` → `{"a":1,"b":2}` |
-| `-` | Remove key | `'{"a":1,"b":2}'::jsonb - 'a'` → `{"b":2}` |
-| `#-` | Remove at path | `'{"a":{"b":1}}'::jsonb #- '{a,b}'` → `{"a":{}}` |
+| Operator | Description       | Example                                             |
+| -------- | ----------------- | --------------------------------------------------- |
+| `\|\|`   | Concatenate/merge | `'{"a":1}'::jsonb \|\| '{"b":2}'` → `{"a":1,"b":2}` |
+| `-`      | Remove key        | `'{"a":1,"b":2}'::jsonb - 'a'` → `{"b":2}`          |
+| `#-`     | Remove at path    | `'{"a":{"b":1}}'::jsonb #- '{a,b}'` → `{"a":{}}`    |
 
 ## Essential Functions
 
@@ -156,36 +156,36 @@ SELECT * FROM products WHERE metadata->'features' @> '["WiFi"]';
 
 ```sql
 -- Add new field
-UPDATE products 
+UPDATE products
 SET metadata = jsonb_set(metadata, '{discount}', '10'::jsonb)
 WHERE id = 1;
 
 -- Update nested field
-UPDATE products 
+UPDATE products
 SET metadata = jsonb_set(metadata, '{specs, ram}', '"32GB"'::jsonb)
 WHERE id = 1;
 
 -- Add to array
-UPDATE products 
+UPDATE products
 SET metadata = jsonb_set(
-    metadata, 
-    '{features}', 
+    metadata,
+    '{features}',
     (metadata->'features') || '["New Feature"]'::jsonb
 )
 WHERE id = 1;
 
 -- Merge objects
-UPDATE products 
+UPDATE products
 SET metadata = metadata || '{"new_field": "value"}'::jsonb
 WHERE id = 1;
 
 -- Remove field
-UPDATE products 
+UPDATE products
 SET metadata = metadata - 'old_field'
 WHERE id = 1;
 
 -- Remove nested field
-UPDATE products 
+UPDATE products
 SET metadata = metadata #- '{specs,old_spec}'
 WHERE id = 1;
 ```
@@ -356,7 +356,7 @@ WHERE metadata @> '{"category": "laptop"}'
   AND metadata->'specs' @> '{"ram": "16GB"}';
 
 -- Aggregate by brand with average rating
-SELECT 
+SELECT
     metadata->>'brand' as brand,
     AVG((metadata->>'rating')::NUMERIC) as avg_rating,
     COUNT(*) as product_count
@@ -384,7 +384,7 @@ WHERE settings->>'theme' = 'light';
 
 ```sql
 -- Find conversion funnel
-SELECT 
+SELECT
     event_type,
     COUNT(*) as event_count,
     COUNT(DISTINCT user_id) as unique_users
@@ -394,7 +394,7 @@ GROUP BY event_type
 ORDER BY event_count DESC;
 
 -- Average session duration by page
-SELECT 
+SELECT
     event_data->>'page' as page,
     AVG((event_data->>'duration')::INTEGER) as avg_duration
 FROM events
@@ -409,7 +409,7 @@ GROUP BY event_data->>'page';
 
 ```sql
 -- See if query uses index
-EXPLAIN (ANALYZE, BUFFERS) 
+EXPLAIN (ANALYZE, BUFFERS)
 SELECT * FROM products WHERE metadata @> '{"brand": "Apple"}';
 ```
 
@@ -424,7 +424,7 @@ WHERE NOT (metadata ? 'brand' AND metadata ? 'price');
 -- Validate data types
 SELECT id, name, metadata->>'price'
 FROM products
-WHERE metadata ? 'price' 
+WHERE metadata ? 'price'
   AND jsonb_typeof(metadata->'price') != 'number';
 ```
 
@@ -438,4 +438,4 @@ WHERE query ILIKE '%metadata%'
 ORDER BY mean_exec_time DESC;
 ```
 
-This cheat sheet covers the most common JSONB operations you'll need for building applications with PostgreSQL's JSON capabilities! 
+This cheat sheet covers the most common JSONB operations you'll need for building applications with PostgreSQL's JSON capabilities!
