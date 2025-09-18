@@ -177,7 +177,7 @@ for chunk in fixed_size_chunker(sample_text, 200, 50):
   print(f"Chunk: {chunk}")
 
 
-def analyze_chunk_quality(chunks: List[DocumentChunk]) -> dict:
+def analyze_chunk_quality(chunks):
     """
     Analyze the quality of fixed-size chunks.
     
