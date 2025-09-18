@@ -43,7 +43,7 @@ Your goal is to create a production-ready RAG system that IT staff can rely on f
 
 ---
 
-## Part 1: Set Up RAG Infrastructure (5 minutes)
+## Part 1: Set Up RAG Infrastructure 
 
 ### Task 1.1: Create Project Structure
 
@@ -78,7 +78,7 @@ Your goal is to create a production-ready RAG system that IT staff can rely on f
 
 ---
 
-## Part 2: Implement Similarity Search (10 minutes)
+## Part 2: Implement Similarity Search 
 
 ### Task 2.1: Create Embedding Function
 
@@ -124,7 +124,7 @@ LIMIT %s;
 
 ---
 
-## Part 3: Context Assembly (8 minutes)
+## Part 3: Context Assembly 
 
 ### Task 3.1: Implement Context Assembly
 
@@ -163,7 +163,7 @@ More chunk text...
 
 ---
 
-## Part 4: OpenAI Integration (12 minutes)
+## Part 4: OpenAI Integration 
 
 ### Task 4.1: Implement LLM Response Generation
 
@@ -201,7 +201,7 @@ More chunk text...
 
 ---
 
-## Part 5: Complete RAG Pipeline (10 minutes)
+## Part 5: Complete RAG Pipeline 
 
 ### Task 5.1: Implement Main Pipeline Function
 
@@ -242,7 +242,7 @@ More chunk text...
 
 ---
 
-## Part 6: System Validation (5 minutes)
+## Part 6: System Validation 
 
 ### Task 6.1: Implement Validation Function
 
