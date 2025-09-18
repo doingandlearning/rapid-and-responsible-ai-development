@@ -1,6 +1,37 @@
-# Capstone Lab: Advanced RAG Systems - Choose Your Adventure
+# Capstone Lab: Advanced RAG Systems - Choose Your Spice Level 🌶️
 
 **Objective**: Build a complete, production-ready RAG system showcasing all course concepts
+
+## 🌶️ Choose Your Spice Level
+
+Just like cooking, everyone has their preferred spice level! Choose the approach that feels right for you:
+
+### 🌶️ **Mild** - "I like to follow the recipe step-by-step"
+- **Perfect for**: Folks who prefer clear, detailed instructions
+- **Approach**: Complete working code with detailed explanations
+- **Outcome**: Fully functional RAG system with understanding of each component
+
+### 🌶️🌶️ **Medium** - "I like to experiment and add my own flavors"
+- **Perfect for**: Folks who want guidance but enjoy problem-solving
+- **Approach**: Working examples with some gaps to fill in
+- **Outcome**: Customized RAG system with your own improvements
+
+### 🌶️🌶️🌶️ **Spicy** - "I love to create from scratch and surprise myself"
+- **Perfect for**: Folks who thrive on challenges and discovery
+- **Approach**: Skeleton code with hints and advanced features to implement
+- **Outcome**: Advanced RAG system with cutting-edge features
+
+**All spice levels lead to the same delicious result - a working RAG system!** 🎉
+
+## 📚 Implementation Guides
+
+Ready to start cooking? Choose your spice level and follow the guides:
+
+- **[🌶️ Mild Implementation Guide](mild/)** - Complete working code with detailed explanations
+- **[🌶️🌶️ Medium Implementation Guide](medium/)** - Working examples with gaps to fill in
+- **[🌶️🌶️🌶️ Spicy Implementation Guide](spicy/)** - Skeleton code with creative challenges
+
+**Need help?** Check out our [🆘 Troubleshooting Guide](TROUBLESHOOTING.md) for common issues and solutions.
 
 ## 🎯 Project Options
 
