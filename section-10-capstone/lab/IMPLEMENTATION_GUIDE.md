@@ -15,11 +15,11 @@ Perfect if you want to understand every ingredient and technique before cooking!
 - ✅ Detailed troubleshooting guides
 
 ### Implementation Path:
-1. **[Mild: Database Setup](mild/database_setup.md)** - Complete working database functions
-2. **[Mild: Document Processing](mild/document_processing.md)** - Full document processing pipeline
-3. **[Mild: Search Engine](mild/search_engine.md)** - Working vector search implementation
-4. **[Mild: RAG Pipeline](mild/rag_pipeline.md)** - Complete RAG system
-5. **[Mild: Frontend Integration](mild/frontend_integration.md)** - Full React integration
+1. **[Mild: Database Setup](mild/1_database_setup.md)** - Complete working database functions
+2. **[Mild: Document Processing](mild/2_document_processing.md)** - Full document processing pipeline
+3. **[Mild: Search Engine](mild/3_search_engine.md)** - Working vector search implementation
+4. **[Mild: RAG Pipeline](mild/4_rag_pipeline.md)** - Complete RAG system
+5. **[Mild: Frontend Integration](mild/5_frontend_integration.md)** - Full React integration
 
 ---
 
@@ -36,11 +36,11 @@ Great if you want working examples but enjoy filling in the gaps yourself!
 - ✅ Multiple approaches to try
 
 ### Implementation Path:
-1. **[Medium: Database Setup](medium/database_setup.md)** - Working examples with gaps to fill
-2. **[Medium: Document Processing](medium/document_processing.md)** - Core functions with extensions
-3. **[Medium: Search Engine](medium/search_engine.md)** - Basic search with advanced features to add
-4. **[Medium: RAG Pipeline](medium/rag_pipeline.md)** - Working pipeline with customizations
-5. **[Medium: Frontend Integration](medium/frontend_integration.md)** - Functional UI with enhancements
+1. **[Medium: Database Setup](medium/1_database_setup.md)** - Working examples with gaps to fill
+2. **[Medium: Document Processing](medium/2_document_processing.md)** - Core functions with extensions
+3. **[Medium: Search Engine](medium/3_search_engine.md)** - Basic search with advanced features to add
+4. **[Medium: RAG Pipeline](medium/4_rag_pipeline.md)** - Working pipeline with customizations
+5. **[Medium: Frontend Integration](medium/5_frontend_integration.md)** - Functional UI with enhancements
 
 ---
 
@@ -57,11 +57,11 @@ Ideal if you thrive on challenges and want to discover your own solutions!
 - ✅ Creative freedom to experiment
 
 ### Implementation Path:
-1. **[Spicy: Database Setup](spicy/database_setup.md)** - Skeleton with advanced features
-2. **[Spicy: Document Processing](spicy/document_processing.md)** - Stubs with creative challenges
-3. **[Spicy: Search Engine](spicy/search_engine.md)** - Advanced search algorithms
-4. **[Spicy: RAG Pipeline](spicy/rag_pipeline.md)** - Cutting-edge RAG techniques
-5. **[Spicy: Frontend Integration](spicy/frontend_integration.md)** - Modern UI patterns
+1. **[Spicy: Database Setup](spicy/1_database_setup.md)** - Skeleton with advanced features
+2. **[Spicy: Document Processing](spicy/2_document_processing.md)** - Stubs with creative challenges
+3. **[Spicy: Search Engine](spicy/3_search_engine.md)** - Advanced search algorithms
+4. **[Spicy: RAG Pipeline](spicy/4_rag_pipeline.md)** - Cutting-edge RAG techniques
+5. **[Spicy: Frontend Integration](spicy/5_frontend_integration.md)** - Modern UI patterns
 
 ---
 
