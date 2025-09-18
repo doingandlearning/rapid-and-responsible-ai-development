@@ -7,7 +7,7 @@ This directory contains the complete reference implementation for the capstone l
 ```
 edinburgh-student-chatbot/
 ├── backend/
-│   ├── app.py                     # FastAPI application
+│   ├── app.py                     # Flask application
 │   ├── config.py                  # Configuration management
 │   ├── services/
 │   │   ├── document_processor.py  # Advanced document processing
@@ -112,7 +112,7 @@ The solution implements a sophisticated RAG pipeline with:
 
 - **Query Analysis**: Automatic query classification and enhancement
 - **Hybrid Search**: Combines vector similarity and full-text search
-- **Re-ranking**: Context-aware result prioritization  
+- **Re-ranking**: Context-aware result prioritization
 - **Source Attribution**: Comprehensive citation with authority levels
 - **Confidence Scoring**: Reliability assessment for each response
 
@@ -146,13 +146,15 @@ Complete ethical AI compliance including:
 Use this checklist to verify your implementation against the solution:
 
 ### ✅ Core Functionality
+
 - [ ] Document ingestion and vector storage working
 - [ ] Vector similarity search returning relevant results
 - [ ] RAG pipeline generating coherent responses
 - [ ] Source attribution working correctly
 - [ ] Frontend displaying responses and sources
 
-### ✅ Advanced Features  
+### ✅ Advanced Features
+
 - [ ] Query classification and enhancement implemented
 - [ ] Hybrid search combining vector + text search
 - [ ] Result re-ranking based on context
@@ -160,6 +162,7 @@ Use this checklist to verify your implementation against the solution:
 - [ ] Suggested queries functionality
 
 ### ✅ Ethical AI Compliance
+
 - [ ] Bias detection system operational
 - [ ] Content filtering preventing harmful queries
 - [ ] Privacy protection measures in place
@@ -167,13 +170,15 @@ Use this checklist to verify your implementation against the solution:
 - [ ] Human oversight capabilities available
 
 ### ✅ Production Readiness
+
 - [ ] Performance meets sub-3-second target
-- [ ] Error handling prevents system crashes  
+- [ ] Error handling prevents system crashes
 - [ ] Health monitoring and alerting configured
 - [ ] Security measures implemented
 - [ ] Documentation complete and accurate
 
 ### ✅ User Experience
+
 - [ ] Interface intuitive and responsive
 - [ ] Mobile experience satisfactory
 - [ ] Source citations clear and helpful
@@ -183,40 +188,50 @@ Use this checklist to verify your implementation against the solution:
 ## Common Issues and Solutions
 
 ### Issue: Slow Response Times
+
 **Symptoms**: Responses take > 5 seconds
 **Solutions**:
+
 1. Check HNSW index creation: `SELECT * FROM pg_indexes WHERE tablename = 'student_support_docs';`
 2. Verify connection pooling: Monitor database connections
 3. Optimize chunk size: Reduce to 600-800 characters
 4. Enable query caching for frequent queries
 
 ### Issue: Poor Response Quality
+
 **Symptoms**: Responses not relevant or accurate
 **Solutions**:
+
 1. Verify document ingestion: Check chunk count and content quality
 2. Adjust hybrid search weights: Experiment with vector vs. text balance
 3. Review query enhancement logic: Ensure entity extraction working
 4. Check source authority weighting in re-ranking
 
 ### Issue: Bias in Responses
+
 **Symptoms**: Responses favor certain groups or perspectives  
 **Solutions**:
+
 1. Audit training documents for representational bias
 2. Enhance bias detection keywords and patterns
 3. Implement fairness constraints in ranking
 4. Regular manual review of responses across user groups
 
 ### Issue: Frontend Connection Errors
+
 **Symptoms**: API calls failing from frontend
 **Solutions**:
+
 1. Verify CORS configuration in FastAPI
 2. Check API base URL in frontend configuration
 3. Confirm backend health endpoint accessibility
 4. Review network/firewall settings
 
 ### Issue: Database Connection Issues
+
 **Symptoms**: Backend cannot connect to PostgreSQL
 **Solutions**:
+
 1. Verify Docker services running: `docker ps`
 2. Check database configuration in config.py
 3. Ensure pgvector extension installed: `CREATE EXTENSION IF NOT EXISTS vector;`
@@ -226,30 +241,33 @@ Use this checklist to verify your implementation against the solution:
 
 The reference solution achieves:
 
-| Metric | Target | Achieved |
-|--------|--------|----------|
-| Average Response Time | < 3000ms | ~1800ms |
-| Accuracy (Eval Dataset) | > 85% | ~88% |
-| Source Citation Rate | > 90% | ~95% |
+| Metric                   | Target    | Achieved   |
+| ------------------------ | --------- | ---------- |
+| Average Response Time    | < 3000ms  | ~1800ms    |
+| Accuracy (Eval Dataset)  | > 85%     | ~88%       |
+| Source Citation Rate     | > 90%     | ~95%       |
 | Concurrent User Capacity | 50+ users | 100+ users |
-| System Uptime | > 99% | 99.8% |
-| Bias Risk Score | < 0.2 | ~0.15 |
+| System Uptime            | > 99%     | 99.8%      |
+| Bias Risk Score          | < 0.2     | ~0.15      |
 
 ## Deployment Variations
 
 ### Development Deployment
+
 - Single-container setup
 - SQLite for development database
 - In-memory caching
 - Debug logging enabled
 
-### Staging Deployment  
+### Staging Deployment
+
 - Multi-container with load balancer
 - Shared PostgreSQL instance
 - Redis for caching
 - Performance monitoring
 
 ### Production Deployment
+
 - High-availability setup
 - Managed database service
 - CDN for static assets
@@ -258,18 +276,21 @@ The reference solution achieves:
 ## Extension Opportunities
 
 ### Short-term Enhancements (1-2 weeks)
+
 - **Multi-language Support**: Add translation capabilities
 - **Voice Interface**: Integrate speech-to-text/text-to-speech
 - **Personalization**: User preference learning
 - **Advanced Analytics**: Detailed usage insights
 
 ### Medium-term Features (1-2 months)
+
 - **SSO Integration**: University authentication system
 - **Proactive Notifications**: Alert students about deadlines
 - **Integration APIs**: Connect with other university systems
 - **Advanced NLP**: Sentiment analysis and intent recognition
 
 ### Long-term Vision (6+ months)
+
 - **Multimodal Capabilities**: Handle images, documents, audio
 - **Predictive Analytics**: Anticipate student needs
 - **Automated Content Updates**: Dynamic knowledge base maintenance
@@ -278,6 +299,7 @@ The reference solution achieves:
 ## Testing the Solution
 
 ### Automated Testing
+
 ```bash
 # Run comprehensive evaluation
 cd backend/tests
@@ -292,6 +314,7 @@ python test_system_performance.py
 ```
 
 ### Manual Testing
+
 Use the provided test queries in `data/evaluation/test_queries.json`:
 
 ```json
@@ -313,6 +336,7 @@ Use the provided test queries in `data/evaluation/test_queries.json`:
 ```
 
 ### Load Testing
+
 ```bash
 # Simple load test with curl
 for i in {1..10}; do
@@ -326,16 +350,19 @@ wait
 ## Documentation and Support
 
 ### API Documentation
+
 - Interactive docs at `/api/docs`
 - OpenAPI specification at `/api/openapi.json`
 - Postman collection available in `docs/api_collection.json`
 
 ### User Documentation
+
 - End-user guide in `docs/user_guide.md`
 - Admin guide in `docs/admin_guide.md`
 - Troubleshooting guide in `docs/troubleshooting.md`
 
 ### Developer Documentation
+
 - Code documentation via docstrings
 - Architecture decision records in `docs/adr/`
 - Database schema documentation in `docs/schema.md`
@@ -343,6 +370,7 @@ wait
 ## Success Criteria Verification
 
 ### Technical Requirements
+
 - [x] Sub-3-second response times achieved
 - [x] 85%+ accuracy on evaluation dataset
 - [x] Comprehensive source attribution implemented
@@ -350,6 +378,7 @@ wait
 - [x] Production-ready deployment configuration
 
 ### User Experience Requirements
+
 - [x] Intuitive chat interface implemented
 - [x] Mobile-responsive design working
 - [x] Clear source citations provided
@@ -357,6 +386,7 @@ wait
 - [x] Analytics dashboard functional
 
 ### Educational Objectives
+
 - [x] Vector database implementation mastered
 - [x] RAG pipeline development completed
 - [x] Ethical AI principles applied
@@ -374,12 +404,14 @@ wait
 ## Support and Troubleshooting
 
 ### Getting Help
+
 - Review error logs: `docker-compose logs [service-name]`
 - Check health endpoints: `/api/health`
 - Monitor resource usage: `docker stats`
 - Validate configuration: Compare with solution config files
 
 ### Common Commands
+
 ```bash
 # Restart all services
 docker-compose restart

@@ -25,12 +25,12 @@
 | **4**   | Vector Database Complete Implementation | _Lab:_ Setup PostgreSQL+pgvector, create optimized schema, generate embeddings via Ollama, store documents with vectors, create HNSW indexes, test performance.        |
 | **5**   | Document Processing & PDF Chunking      | _Lab:_ Extract text from PDFs, implement chunking strategies (fixed-size, semantic, sliding window), handle metadata preservation, optimize chunk size for embeddings. |
 | **6**   | RAG Pipeline Integration                | k-NN/cosine search with HNSW, assemble context, `POST` to remote `/v1/chat/completions`. _Lab:_ build a context-aware Q\&A micro-service that cites its sources.       |
-| **6.5** | Model Context Protocol (MCP)            | Extend LLMs with structured tools for document querying. _Lab:_ build MCP server with semantic search, document retrieval, and analysis tools.                         |
 | **7**   | Advanced Vector Queries                 | Blend JSONB, relational filters, and vector distance in one SQL statement. _Lab:_ craft hybrid queries for complex use-cases.                                          |
 | **8**   | Production Deployment                   | Scaling, monitoring, security, performance optimization. _Lab:_ production-ready configuration and deployment strategies.                                              |
 | **9**   | AI Ethics & Governance                  | UK-GDPR, UoE guidelines, model cards, PII masking, audit logging.                                                                                                      |
 | **10**  | Capstone Lab – Student Support Chatbot  | Deploy Ollama + pgvector + remote completion API, ingest course handbooks, expose REST chat endpoint & minimal React UI; measure relevance/latency; present findings.  |
 | **11**  | Wrap-Up & Next Steps                    | Key takeaways, repo hand-off, future learning paths (fine-tuning, multimodal, eval frameworks).                                                                        |
+| **x** | Model Context Protocol (MCP)            | Extend LLMs with structured tools for document querying. _Lab:_ build MCP server with semantic search, document retrieval, and analysis tools.                         |
 
 ---
 
