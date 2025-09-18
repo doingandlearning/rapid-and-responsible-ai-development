@@ -121,6 +121,7 @@ LIMIT %s;
 - Try queries like "password reset", "WiFi connection", "VPN setup"
 - Verify similarity scores are reasonable (0.0 to 1.0)
 - Check that results are properly sorted by relevance
+- **Note**: For this dataset, similarity scores typically range from 0.4-0.7, so use threshold 0.4
 
 ---
 
@@ -219,10 +220,10 @@ More chunk text...
 **Your task:** Implement `determine_confidence_level()`.
 
 **Confidence levels:**
-- **High**: Best similarity ≥ 0.85 AND ≥ 2 chunks
-- **Medium**: Best similarity ≥ 0.70 AND ≥ 1 chunk
-- **Low**: Best similarity ≥ 0.60
-- **Insufficient**: Best similarity < 0.60
+- **High**: Best similarity ≥ 0.70 AND ≥ 2 chunks
+- **Medium**: Best similarity ≥ 0.55 AND ≥ 1 chunk
+- **Low**: Best similarity ≥ 0.45
+- **Insufficient**: Best similarity < 0.45
 - **No data**: No chunks found
 
 ### Task 5.3: Handle Edge Cases
@@ -360,6 +361,18 @@ except:
 ```python
 # Lower similarity threshold for testing
 results = search_similar_chunks(query, similarity_threshold=0.4)
+```
+
+**No search results (most common issue):**
+
+```python
+# Check what similarity scores you're actually getting
+results = search_similar_chunks(query, limit=10, similarity_threshold=0.0)
+for result in results:
+    print(f"Similarity: {result.similarity_score:.3f} - {result.document_title}")
+
+# Then adjust threshold based on actual scores
+# For this dataset, 0.4 works well, but 0.6 is too high
 ```
 
 **Context too long:**

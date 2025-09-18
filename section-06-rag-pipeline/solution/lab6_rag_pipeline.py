@@ -28,7 +28,7 @@ DB_CONFIG = {
 # API configuration
 OLLAMA_URL = "http://localhost:11434/api/embed"
 EMBEDDING_MODEL = "bge-m3"
-OPENAI_API_KEY = "your-api-key-here"  # Replace with actual key
+OPENAI_API_KEY = "API_KEY"  # Replace with actual key
 OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
 
 @dataclass
@@ -79,7 +79,7 @@ def get_embedding(text: str, max_retries: int = 3) -> Optional[List[float]]:
     return None
 
 def search_similar_chunks(query: str, limit: int = 5, 
-                         similarity_threshold: float = 0.5) -> List[SearchResult]:
+                         similarity_threshold: float = 0.4) -> List[SearchResult]:
     """Search for document chunks similar to the user query."""
     print(f"🔍 Searching for chunks similar to: '{query}'")
     
@@ -302,18 +302,18 @@ def determine_confidence_level(search_results: List[SearchResult]) -> str:
     best_similarity = max(result.similarity_score for result in search_results)
     chunk_count = len(search_results)
     
-    if best_similarity >= 0.85 and chunk_count >= 2:
+    if best_similarity >= 0.70 and chunk_count >= 2:
         return "high"
-    elif best_similarity >= 0.70 and chunk_count >= 1:
+    elif best_similarity >= 0.55 and chunk_count >= 1:
         return "medium"
-    elif best_similarity >= 0.60:
+    elif best_similarity >= 0.45:
         return "low"
     else:
         return "insufficient"
 
 def answer_question(query: str, api_key: str, 
                    max_chunks: int = 5, 
-                   similarity_threshold: float = 0.6) -> RAGResponse:
+                   similarity_threshold: float = 0.4) -> RAGResponse:
     """Complete RAG pipeline: search → assemble → generate → respond"""
     start_time = time.time()
     
@@ -704,7 +704,7 @@ def main():
     
     for query in test_queries[:3]:  # Test first 3 queries
         print(f"\n🔍 Testing query: '{query}'")
-        results = search_similar_chunks(query, limit=3, similarity_threshold=0.6)
+        results = search_similar_chunks(query, limit=3, similarity_threshold=0.4)
         
         if results:
             print(f"   ✅ Found {len(results)} relevant chunks:")
@@ -718,7 +718,7 @@ def main():
     print("-" * 40)
     
     complex_query = "How do I set up university email and WiFi access?"
-    search_results = search_similar_chunks(complex_query, limit=4, similarity_threshold=0.6)
+    search_results = search_similar_chunks(complex_query, limit=4, similarity_threshold=0.4)
     
     if search_results:
         context, sources = assemble_context(search_results, max_tokens=1500)
