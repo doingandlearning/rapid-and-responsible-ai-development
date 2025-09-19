@@ -14,9 +14,9 @@
 ### Existence Operators
 
 | Operator | Description        | Example                                        |
-| -------- | ------------------ | ---------------------------------------------- | ---------------------- |
+| -------- | ------------------ | ---------------------------------------------- | ------------------- | ---------------------- |
 | `?`      | Does key exist?    | `'{"a":1}'::jsonb ? 'a'` → `true`              |
-| `?\|`    | Do any keys exist? | `'{"a":1}'::jsonb ?                            | array['a','b']`→`true` |
+| `?       | `                  | Do any keys exist?                             | `'{"a":1}'::jsonb ? | array['a','b']`→`true` |
 | `?&`     | Do all keys exist? | `'{"a":1}'::jsonb ?& array['a','b']` → `false` |
 
 ### Containment Operators

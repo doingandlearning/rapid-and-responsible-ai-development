@@ -15,3 +15,12 @@ with psycopg.connect(**DB_CONFIG) as conn:
     results = cur.fetchone()
     print(results)
     
+
+file = open("")
+
+file.read()
+
+file.close()
+
+with open("") as file:
+  file.read()
