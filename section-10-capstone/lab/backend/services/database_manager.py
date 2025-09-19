@@ -5,7 +5,6 @@ Modern approach using psycopg with context managers and extras
 """
 
 import psycopg
-import psycopg.extras
 import json
 import logging
 from typing import List, Dict, Any, Optional
@@ -74,7 +73,7 @@ def initialize_database():
                     CREATE TABLE IF NOT EXISTS query_analytics (
                         id SERIAL PRIMARY KEY,
                         query_text TEXT NOT NULL,
-                        query_metadata JSONB DEFAULT '{}',
+                        metadata JSONB DEFAULT '{}',
                         response_metadata JSONB DEFAULT '{}',
                         user_session JSONB DEFAULT '{}',
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -151,7 +150,7 @@ def search_chunks(query_embedding: List[float],
     
     try:
         with get_db_connection() as conn:
-            with conn.cursor(cursor_factory=psycopg.extras.RealDictCursor) as cur:
+            with conn.cursor(cursor_factory=psycopg.RealDictCursor) as cur:
                 # Build WHERE clause for filters
                 where_conditions = ["TRUE"]
                 params = [query_embedding, query_embedding, limit]
@@ -206,7 +205,7 @@ def get_document_stats() -> Dict[str, Any]:
     """Get document statistics using JSONB queries with RealDictCursor"""
     try:
         with get_db_connection() as conn:
-            with conn.cursor(cursor_factory=psycopg.extras.RealDictCursor) as cur:
+            with conn.cursor(cursor_factory=psycopg.RealDictCursor) as cur:
                 # Total chunks
                 cur.execute("SELECT COUNT(*) as total_chunks FROM document_chunks")
                 total_chunks = cur.fetchone()['total_chunks']
@@ -290,7 +289,7 @@ def get_analytics_summary(days: int = 7) -> Dict[str, Any]:
     """Get analytics summary using JSONB queries with RealDictCursor"""
     try:
         with get_db_connection() as conn:
-            with conn.cursor(cursor_factory=psycopg.extras.RealDictCursor) as cur:
+            with conn.cursor(cursor_factory=psycopg.RealDictCursor) as cur:
                 # Basic stats
                 cur.execute("""
                     SELECT 

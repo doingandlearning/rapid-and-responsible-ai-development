@@ -30,7 +30,7 @@ CORS(app)
 # Configuration
 PROJECT_TYPE = "literature"  # Default project type
 
-@app.before_first_request
+@app.before_request
 def initialize_services():
     """Initialize all services on startup"""
     try:

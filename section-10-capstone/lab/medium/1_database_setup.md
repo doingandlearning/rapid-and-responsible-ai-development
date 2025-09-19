@@ -11,7 +11,6 @@ Here's a working database connection function with some improvements for you to 
 ```python
 # services/database_manager.py
 import psycopg
-import psycopg.extras
 import json
 import logging
 from typing import List, Dict, Any, Optional
@@ -188,7 +187,7 @@ def search_chunks(query_embedding: List[float], limit: int = 10, similarity_thre
     """
     try:
         with get_db_connection() as conn:
-            with conn.cursor(row_factory=psycopg.extras.RealDictCursor) as cur:
+            with conn.cursor(row_factory=psycopg.RealDictCursor) as cur:
                 # TODO: Build dynamic WHERE clause based on filters
                 # TODO: Add query expansion
                 # TODO: Add result ranking algorithm
