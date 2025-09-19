@@ -1,0 +1,49 @@
+# Sample Custom Data - Whatever You Fancy!
+
+This is a sample file for the "Whatever You Fancy" project option. 
+Replace this content with your own data that interests you!
+
+## Ideas for Custom Projects
+
+### Recipe Analysis System
+- Store cooking recipes with ingredients, techniques, and cultural context
+- Query: "What's a good vegetarian pasta dish for beginners?"
+- Metadata: cuisine_type, difficulty_level, prep_time, dietary_restrictions
+
+### Music Recommendation Engine
+- Analyze song lyrics, genres, and artist information
+- Query: "Find me upbeat songs about friendship"
+- Metadata: genre, mood, tempo, year, artist, album
+
+### Personal Knowledge Base
+- Store your notes, ideas, and research
+- Query: "What did I learn about machine learning last month?"
+- Metadata: topic, date, source, importance_level, tags
+
+### Movie/TV Show Database
+- Analyze plot summaries, reviews, and metadata
+- Query: "Recommend a sci-fi movie with strong female characters"
+- Metadata: genre, year, rating, director, cast, themes
+
+### Fitness and Health Tracker
+- Store workout routines, nutrition info, and progress
+- Query: "What's a good upper body workout for beginners?"
+- Metadata: muscle_groups, equipment, difficulty, duration
+
+## Your Turn!
+
+Replace this content with whatever domain interests you:
+- Sports statistics and analysis
+- Historical events and timelines
+- Product reviews and comparisons
+- Travel guides and recommendations
+- Educational content and tutorials
+- Or anything else that sparks your curiosity!
+
+The beauty of this project is that you get to choose:
+- What data to work with
+- What questions to answer
+- What metadata to track
+- What makes sense for your use case
+
+Happy building! 🚀
