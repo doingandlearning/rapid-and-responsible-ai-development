@@ -16,7 +16,7 @@ The backend uses a modern functional approach with the following services:
 
 - **Modern psycopg3**: Uses the latest PostgreSQL driver with context managers
 - **Structured Data**: SearchResult dataclasses for type safety
-- **RealDictCursor**: Named column access for better readability
+- **dict_row**: Named column access for better readability
 - **JSONB Integration**: Rich metadata storage and querying
 - **Error Handling**: Comprehensive error handling and validation
 

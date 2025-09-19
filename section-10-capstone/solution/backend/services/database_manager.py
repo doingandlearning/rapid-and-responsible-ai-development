@@ -9,6 +9,7 @@ import json
 import logging
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
+from psycopg.rows import dict_row
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +44,7 @@ def initialize_database():
     """Initialize database schema with JSONB support"""
     try:
         with get_db_connection() as conn:
-            with conn.cursor() as cur:
+            with conn.cursor(row_factory=dict_row) as cur:
                 # Enable extensions
                 cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
                 cur.execute("CREATE EXTENSION IF NOT EXISTS btree_gin;")
@@ -105,6 +106,51 @@ def initialize_database():
         logger.error(f"Database initialization failed: {e}")
         raise
 
+def store_chunk(chunk_data: Dict[str, Any], embedding: List[float]) -> bool:
+    """
+    Store a document chunk in the database.
+    
+    Args:
+        chunk_data: Dictionary containing chunk information
+        embedding: Vector embedding for the chunk
+        
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    INSERT INTO document_chunks 
+                    (chunk_id, content, embedding, metadata, document_info, processing_info, document_type, author)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (chunk_id) DO UPDATE SET
+                        content = EXCLUDED.content,
+                        embedding = EXCLUDED.embedding,
+                        metadata = EXCLUDED.metadata,
+                        document_info = EXCLUDED.document_info,
+                        processing_info = EXCLUDED.processing_info,
+                        document_type = EXCLUDED.document_type,
+                        author = EXCLUDED.author
+                """, (
+                    chunk_data['chunk_id'],
+                    chunk_data['content'],
+                    embedding,
+                    json.dumps(chunk_data['metadata']),
+                    json.dumps(chunk_data['document_info']),
+                    json.dumps(chunk_data['processing_info']),
+                    chunk_data.get('document_type', 'unknown'),
+                    chunk_data.get('author', 'Unknown')
+                ))
+                
+                conn.commit()
+                logger.info(f"Stored chunk: {chunk_data['chunk_id']}")
+                return True
+                
+    except Exception as e:
+        logger.error(f"Failed to store chunk {chunk_data.get('chunk_id', 'unknown')}: {e}")
+        return False
+
 def store_chunks(chunks: List[Dict], embeddings: List[List[float]]):
     """Store processed chunks with embeddings using modern psycopg approach"""
     if len(chunks) != len(embeddings):
@@ -143,69 +189,58 @@ def store_chunks(chunks: List[Dict], embeddings: List[List[float]]):
         logger.error(f"Failed to store chunks: {e}")
         raise
 
-def search_chunks(query_embedding: List[float], 
-                 filters: Optional[Dict[str, Any]] = None,
-                 limit: int = 10) -> List[SearchResult]:
-    """Search chunks with JSONB filtering using RealDictCursor"""
+def search_chunks(query_embedding: List[float], limit: int = 10, similarity_threshold: float = 0.1) -> List[SearchResult]:
+    """
+    Search for similar chunks using vector similarity.
     
+    Args:
+        query_embedding: Vector embedding of the search query
+        limit: Maximum number of results to return
+        similarity_threshold: Minimum similarity score (0-1)
+        
+    Returns:
+        List of SearchResult objects
+    """
     try:
         with get_db_connection() as conn:
-            with conn.cursor(cursor_factory=psycopg.RealDictCursor) as cur:
-                # Build WHERE clause for filters
-                where_conditions = ["TRUE"]
-                params = [query_embedding, query_embedding, limit]
-                param_index = 4
-                
-                if filters:
-                    # Build JSONB filter conditions
-                    for key, value in filters.items():
-                        if key == "metadata":
-                            for meta_key, meta_value in value.items():
-                                where_conditions.append(f"metadata->>%s = %s")
-                                params.extend([meta_key, str(meta_value)])
-                        elif key == "document_info":
-                            for doc_key, doc_value in value.items():
-                                where_conditions.append(f"document_info->>%s = %s")
-                                params.extend([doc_key, str(doc_value)])
-                        elif key == "document_type":
-                            where_conditions.append(f"document_type = %s")
-                            params.append(value)
-                
-                where_clause = " AND ".join(where_conditions)
-                
-                cur.execute(f"""
+            with conn.cursor(row_factory=dict_row) as cur:
+                cur.execute("""
                     SELECT 
-                        chunk_id, content, metadata, document_info, processing_info,
-                        1 - (embedding <=> %s::vector) as similarity_score
+                        chunk_id,
+                        content,
+                        metadata,
+                        document_info,
+                        processing_info,
+                        1 - (embedding <=> %s) as similarity_score
                     FROM document_chunks
-                    WHERE {where_clause}
-                    ORDER BY embedding <=> %s::vector
+                    ORDER BY 1 - (embedding <=> %s) ASC
                     LIMIT %s
-                """, params)
+                """, (json.dumps(query_embedding),  json.dumps(query_embedding),  limit))
                 
-                results = cur.fetchall()
-                
-                return [
-                    SearchResult(
+                results = []
+                for row in cur.fetchall():
+                    result = SearchResult(
                         chunk_id=row['chunk_id'],
                         content=row['content'],
-                        metadata=json.loads(row['metadata']),
-                        document_info=json.loads(row['document_info']),
-                        processing_info=json.loads(row['processing_info']),
+                        metadata=row['metadata'],
+                        document_info=row['document_info'],
+                        processing_info=row['processing_info'],
                         similarity_score=float(row['similarity_score'])
                     )
-                    for row in results
-                ]
+                    results.append(result)
+                
+                logger.info(f"Found {len(results)} similar chunks")
+                return results
                 
     except Exception as e:
         logger.error(f"Search failed: {e}")
         return []
 
 def get_document_stats() -> Dict[str, Any]:
-    """Get document statistics using JSONB queries with RealDictCursor"""
+    """Get document statistics using JSONB queries with row_dict"""
     try:
         with get_db_connection() as conn:
-            with conn.cursor(cursor_factory=psycopg.RealDictCursor) as cur:
+            with conn.cursor(row_factory=dict_row) as cur:
                 # Total chunks
                 cur.execute("SELECT COUNT(*) as total_chunks FROM document_chunks")
                 total_chunks = cur.fetchone()['total_chunks']
@@ -286,10 +321,10 @@ def log_query(query_text: str, response_data: Dict[str, Any]):
         logger.error(f"Failed to log query: {e}")
 
 def get_analytics_summary(days: int = 7) -> Dict[str, Any]:
-    """Get analytics summary using JSONB queries with RealDictCursor"""
+    """Get analytics summary using JSONB queries with dict_row"""
     try:
         with get_db_connection() as conn:
-            with conn.cursor(cursor_factory=psycopg.RealDictCursor) as cur:
+            with conn.cursor(row_factory=dict_row) as cur:
                 # Basic stats
                 cur.execute("""
                     SELECT 

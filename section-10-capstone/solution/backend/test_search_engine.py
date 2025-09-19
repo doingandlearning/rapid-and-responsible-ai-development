@@ -3,7 +3,7 @@ import os
 import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from services.search_engine import search_documents, create_embedding, search_with_filters
+from services.search_engine import search_documents, create_embedding, search_with_filters, track_search_analytics
 
 def test_search_engine():
     """Test all search engine functions"""

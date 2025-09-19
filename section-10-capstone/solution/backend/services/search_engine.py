@@ -34,12 +34,10 @@ def search_documents(query: str, options: Dict[str, Any] = None) -> List[SearchR
         
         # Step 2: Search database for similar chunks
         limit = options.get('limit', 10)
-        similarity_threshold = options.get('similarity_threshold', 0.4)
         
         search_results = database_manager.search_chunks(
             query_embedding=query_embedding,
             limit=limit,
-            similarity_threshold=similarity_threshold
         )
         
         # Step 3: Rank and filter results
@@ -482,3 +480,5 @@ def get_date_range(results: List[SearchResult]) -> Dict[str, str]:
         }
     else:
         return {}
+
+

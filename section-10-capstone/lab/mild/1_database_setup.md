@@ -11,7 +11,7 @@ Here's the complete working code for database connections:
 ```python
 # services/database_manager.py
 import psycopg
-import psycopg.extras
+from psycopg.rows import dict_row
 import json
 import logging
 from typing import List, Dict, Any, Optional
@@ -180,8 +180,7 @@ def search_chunks(query_embedding: List[float], limit: int = 10, similarity_thre
     """
     try:
         with get_db_connection() as conn:
-            # Use RealDictCursor for named column access
-            with conn.cursor(row_factory=psycopg.RealDictCursor) as cur:
+            with conn.cursor(row_factory=dict_row) as cur:
                 cur.execute("""
                     SELECT 
                         chunk_id,
