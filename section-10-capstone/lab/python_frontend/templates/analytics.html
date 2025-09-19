@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics Dashboard - RAG System Capstone{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-gray-900">Analytics Dashboard</h2>
+        <button onclick="refreshAnalytics()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            <i class="fas fa-sync-alt mr-2"></i>Refresh
+        </button>
+    </div>
+
+    {% if error %}
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div class="flex items-center">
+            <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+            <span class="text-red-800 font-medium">Error loading analytics</span>
+        </div>
+        <p class="text-red-700 text-sm mt-1">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    {% if not analytics and not error %}
+    <div class="text-center py-8">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p class="text-gray-500">Loading analytics data...</p>
+    </div>
+    {% endif %}
+
+    {% if analytics %}
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center">
+                <i class="fas fa-chart-bar text-3xl text-blue-600 mr-4"></i>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Total Queries</p>
+                    <p class="text-2xl font-semibold text-gray-900">
+                        {{ analytics.query_analytics.total_queries or 0 }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center">
+                <i class="fas fa-clock text-3xl text-green-600 mr-4"></i>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Avg Response Time</p>
+                    <p class="text-2xl font-semibold text-gray-900">
+                        {% if analytics.query_analytics.avg_response_time_ms %}
+                            {{ "%.0f"|format(analytics.query_analytics.avg_response_time_ms) }}ms
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center">
+                <i class="fas fa-trending-up text-3xl text-purple-600 mr-4"></i>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Avg Confidence</p>
+                    <p class="text-2xl font-semibold text-gray-900">
+                        {% if analytics.query_analytics.avg_confidence %}
+                            {{ "%.0f"|format(analytics.query_analytics.avg_confidence * 100) }}%
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center">
+                <i class="fas fa-users text-3xl text-orange-600 mr-4"></i>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Documents</p>
+                    <p class="text-2xl font-semibold text-gray-900">
+                        {{ document_stats.total_chunks or 0 }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Types -->
+    {% if document_stats.document_types %}
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Document Types</h3>
+        <div class="space-y-2">
+            {% for type, count in document_stats.document_types.items() %}
+            <div class="flex justify-between items-center">
+                <span class="text-gray-600 capitalize">{{ type.replace('_', ' ') }}</span>
+                <span class="font-semibold">{{ count }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Popular Themes -->
+    {% if document_stats.popular_themes and document_stats.popular_themes|length > 0 %}
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Popular Themes</h3>
+        <div class="space-y-2">
+            {% for theme in document_stats.popular_themes[:5] %}
+            <div class="flex justify-between items-center">
+                <span class="text-gray-600">{{ theme.theme }}</span>
+                <span class="font-semibold">{{ theme.count }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Top Queries -->
+    {% if analytics.query_analytics.top_queries and analytics.query_analytics.top_queries|length > 0 %}
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Top Queries</h3>
+        <div class="space-y-2">
+            {% for query in analytics.query_analytics.top_queries[:5] %}
+            <div class="flex justify-between items-center">
+                <span class="text-gray-600 truncate">{{ query.query }}</span>
+                <span class="font-semibold">{{ query.frequency }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- System Health -->
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">System Health</h3>
+        <div id="health-status" class="flex items-center space-x-2">
+            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+            <span class="text-gray-600">Checking system health...</span>
+        </div>
+    </div>
+
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function refreshAnalytics() {
+    // Show loading state
+    const button = event.target;
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Refreshing...';
+    button.disabled = true;
+    
+    try {
+        // Reload the page to get fresh data
+        window.location.reload();
+    } catch (error) {
+        console.error('Failed to refresh analytics:', error);
+        button.innerHTML = originalText;
+        button.disabled = false;
+    }
+}
+
+async function checkSystemHealth() {
+    try {
+        const response = await fetch('/api/health');
+        const data = await response.json();
+        
+        const healthDiv = document.getElementById('health-status');
+        
+        if (response.ok) {
+            healthDiv.innerHTML = `
+                <div class="flex items-center space-x-2 text-green-600">
+                    <i class="fas fa-check-circle"></i>
+                    <span>System is healthy and operational</span>
+                </div>
+            `;
+        } else {
+            healthDiv.innerHTML = `
+                <div class="flex items-center space-x-2 text-red-600">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>System error: ${data.error || 'Unknown error'}</span>
+                </div>
+            `;
+        }
+    } catch (error) {
+        const healthDiv = document.getElementById('health-status');
+        healthDiv.innerHTML = `
+            <div class="flex items-center space-x-2 text-red-600">
+                <i class="fas fa-times-circle"></i>
+                <span>Cannot connect to backend: ${error.message}</span>
+            </div>
+        `;
+    }
+}
+
+// Check system health on page load
+document.addEventListener('DOMContentLoaded', function() {
+    checkSystemHealth();
+});
+</script>
+{% endblock %}

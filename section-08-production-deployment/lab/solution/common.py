@@ -24,7 +24,7 @@ DB_CONFIG = {
 # API configuration (matching lab6_rag_pipeline.py)
 OLLAMA_URL = "http://localhost:11434/api/embed"
 EMBEDDING_MODEL = "bge-m3"
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 # --- RAG pipeline entrypoint ---
 def get_rag_pipeline() -> Callable[[str], Any]:

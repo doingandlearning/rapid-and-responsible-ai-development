@@ -1,0 +1,23 @@
+# Python Flask Frontend for RAG System Capstone
+# No Node.js required - pure Python implementation
+
+# Core web framework
+Flask==2.3.3
+Werkzeug==2.3.7
+
+# HTTP requests for API communication
+requests==2.31.0
+
+# File handling
+python-magic==0.4.27
+
+# Environment variables
+python-dotenv==1.0.0
+
+# Development dependencies (optional)
+# Uncomment if you want to run in development mode
+# flask-debugtoolbar==0.13.1
+# flask-cors==4.0.0
+
+# Production server (optional)
+# gunicorn==21.2.0

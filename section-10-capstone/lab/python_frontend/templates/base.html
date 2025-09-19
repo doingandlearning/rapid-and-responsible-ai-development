@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RAG System Capstone{% endblock %}</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-semibold text-gray-900">
+                        <a href="{{ url_for('index') }}" class="hover:text-blue-600">
+                            RAG System Capstone
+                        </a>
+                    </h1>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="{{ url_for('chat') }}" 
+                       class="px-3 py-2 rounded-md text-sm font-medium {% if request.endpoint == 'chat' %}bg-blue-100 text-blue-700{% else %}text-gray-500 hover:text-gray-700{% endif %}">
+                        <i class="fas fa-comments mr-1"></i>Chat
+                    </a>
+                    <a href="{{ url_for('analytics') }}" 
+                       class="px-3 py-2 rounded-md text-sm font-medium {% if request.endpoint == 'analytics' %}bg-blue-100 text-blue-700{% else %}text-gray-500 hover:text-gray-700{% endif %}">
+                        <i class="fas fa-chart-bar mr-1"></i>Analytics
+                    </a>
+                    <a href="{{ url_for('settings') }}" 
+                       class="px-3 py-2 rounded-md text-sm font-medium {% if request.endpoint == 'settings' %}bg-blue-100 text-blue-700{% else %}text-gray-500 hover:text-gray-700{% endif %}">
+                        <i class="fas fa-cog mr-1"></i>Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-12">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-sm text-gray-500">
+                <p>RAG System Capstone - Python Frontend (No Node.js Required)</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

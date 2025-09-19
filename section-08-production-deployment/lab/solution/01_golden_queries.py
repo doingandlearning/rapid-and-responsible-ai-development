@@ -37,7 +37,7 @@ def run():
             if hasattr(response, 'answer'):
                 answer = response.answer
                 confidence = getattr(response, 'confidence_level', 'unknown')
-                chunks_found = getattr(response, 'chunks_found', 0)
+                chunks_found = getattr(response, 'chunks_found' 0)
                 response_time = getattr(response, 'response_time', 0)
                 success = getattr(response, 'success', False)
                 

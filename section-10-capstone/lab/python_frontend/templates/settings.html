@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - RAG System Capstone{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <h2 class="text-2xl font-bold text-gray-900">Settings</h2>
+
+    <!-- Document Upload Section -->
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-upload mr-2"></i>Upload Documents
+        </h3>
+        <p class="text-gray-600 mb-4">
+            Upload new documents to add them to your RAG system. Supported formats: TXT, PDF, DOCX, MD
+        </p>
+        
+        <form id="upload-form" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label for="files" class="block text-sm font-medium text-gray-700 mb-2">
+                    Select Files
+                </label>
+                <input
+                    type="file"
+                    id="files"
+                    name="files"
+                    multiple
+                    accept=".txt,.pdf,.docx,.md"
+                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                >
+            </div>
+            
+            <div>
+                <label for="project-type" class="block text-sm font-medium text-gray-700 mb-2">
+                    Project Type
+                </label>
+                <select
+                    id="project-type"
+                    name="project_type"
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                    <option value="general">General</option>
+                    <option value="literature">Literature Analysis</option>
+                    <option value="technical">Technical Documentation</option>
+                    <option value="research">Research Papers</option>
+                    <option value="legal">Legal Documents</option>
+                </select>
+            </div>
+            
+            <button
+                type="submit"
+                id="upload-button"
+                class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                <i class="fas fa-upload mr-2"></i>Upload Documents
+            </button>
+        </form>
+        
+        <!-- Upload Progress -->
+        <div id="upload-progress" class="hidden mt-4">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="flex items-center">
+                    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                    <span class="text-blue-800">Uploading and processing documents...</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Upload Results -->
+        <div id="upload-results" class="hidden mt-4"></div>
+    </div>
+
+    <!-- System Configuration -->
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-cog mr-2"></i>System Configuration
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label for="api-base" class="block text-sm font-medium text-gray-700 mb-2">
+                    API Base URL
+                </label>
+                <input
+                    type="text"
+                    id="api-base"
+                    value="{{ request.url_root }}api"
+                    readonly
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                >
+                <p class="text-xs text-gray-500 mt-1">Backend API endpoint</p>
+            </div>
+            
+            <div>
+                <label for="max-file-size" class="block text-sm font-medium text-gray-700 mb-2">
+                    Max File Size
+                </label>
+                <input
+                    type="text"
+                    id="max-file-size"
+                    value="10 MB"
+                    readonly
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                >
+                <p class="text-xs text-gray-500 mt-1">Maximum file size per upload</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Processing Status -->
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-tasks mr-2"></i>Processing Status
+        </h3>
+        
+        <div id="processing-status" class="flex items-center space-x-2">
+            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+            <span class="text-gray-600">Checking processing status...</span>
+        </div>
+    </div>
+
+    <!-- System Information -->
+    <div class="bg-white p-6 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-info-circle mr-2"></i>System Information
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+                <span class="font-medium text-gray-700">Frontend Version:</span>
+                <span class="text-gray-600 ml-2">Python Flask 1.0</span>
+            </div>
+            <div>
+                <span class="font-medium text-gray-700">Backend Status:</span>
+                <span id="backend-status" class="text-gray-600 ml-2">Checking...</span>
+            </div>
+            <div>
+                <span class="font-medium text-gray-700">Python Version:</span>
+                <span class="text-gray-600 ml-2">3.8+</span>
+            </div>
+            <div>
+                <span class="font-medium text-gray-700">Dependencies:</span>
+                <span class="text-gray-600 ml-2">Flask, Requests</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Handle file upload
+document.getElementById('upload-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const files = document.getElementById('files').files;
+    const projectType = document.getElementById('project-type').value;
+    const uploadButton = document.getElementById('upload-button');
+    const uploadProgress = document.getElementById('upload-progress');
+    const uploadResults = document.getElementById('upload-results');
+    
+    if (files.length === 0) {
+        alert('Please select at least one file to upload.');
+        return;
+    }
+    
+    // Show progress
+    uploadProgress.classList.remove('hidden');
+    uploadButton.disabled = true;
+    uploadButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Uploading...';
+    
+    try {
+        const formData = new FormData();
+        for (let file of files) {
+            formData.append('files', file);
+        }
+        formData.append('project_type', projectType);
+        
+        const response = await fetch('/api/documents/upload', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            uploadResults.innerHTML = `
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                        <span class="text-green-800 font-medium">Upload successful!</span>
+                    </div>
+                    <p class="text-green-700 text-sm mt-1">
+                        ${result.message || 'Documents uploaded and are being processed.'}
+                    </p>
+                </div>
+            `;
+            uploadResults.classList.remove('hidden');
+            
+            // Clear form
+            document.getElementById('files').value = '';
+        } else {
+            throw new Error(result.error || 'Upload failed');
+        }
+    } catch (error) {
+        console.error('Upload failed:', error);
+        uploadResults.innerHTML = `
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                    <span class="text-red-800 font-medium">Upload failed</span>
+                </div>
+                <p class="text-red-700 text-sm mt-1">${error.message}</p>
+            </div>
+        `;
+        uploadResults.classList.remove('hidden');
+    } finally {
+        uploadProgress.classList.add('hidden');
+        uploadButton.disabled = false;
+        uploadButton.innerHTML = '<i class="fas fa-upload mr-2"></i>Upload Documents';
+    }
+});
+
+// Check processing status
+async function checkProcessingStatus() {
+    try {
+        const response = await fetch('/api/documents/processing/status');
+        const data = await response.json();
+        
+        const statusDiv = document.getElementById('processing-status');
+        
+        if (response.ok) {
+            statusDiv.innerHTML = `
+                <div class="flex items-center space-x-2 text-green-600">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Processing complete - ${data.processed_documents || 0} documents processed</span>
+                </div>
+            `;
+        } else {
+            statusDiv.innerHTML = `
+                <div class="flex items-center space-x-2 text-red-600">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Processing error: ${data.error || 'Unknown error'}</span>
+                </div>
+            `;
+        }
+    } catch (error) {
+        const statusDiv = document.getElementById('processing-status');
+        statusDiv.innerHTML = `
+            <div class="flex items-center space-x-2 text-red-600">
+                <i class="fas fa-times-circle"></i>
+                <span>Cannot check processing status: ${error.message}</span>
+            </div>
+        `;
+    }
+}
+
+// Check backend status
+async function checkBackendStatus() {
+    try {
+        const response = await fetch('/api/health');
+        const data = await response.json();
+        
+        const statusSpan = document.getElementById('backend-status');
+        
+        if (response.ok) {
+            statusSpan.textContent = 'Connected';
+            statusSpan.className = 'text-green-600 ml-2';
+        } else {
+            statusSpan.textContent = 'Error';
+            statusSpan.className = 'text-red-600 ml-2';
+        }
+    } catch (error) {
+        const statusSpan = document.getElementById('backend-status');
+        statusSpan.textContent = 'Disconnected';
+        statusSpan.className = 'text-red-600 ml-2';
+    }
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    checkProcessingStatus();
+    checkBackendStatus();
+});
+</script>
+{% endblock %}

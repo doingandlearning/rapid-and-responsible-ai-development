@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}RAG System Capstone - Home{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <div class="max-w-3xl mx-auto">
+        <!-- Hero Section -->
+        <div class="mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                Welcome to RAG System Capstone
+            </h1>
+            <p class="text-xl text-gray-600 mb-8">
+                A Python-powered frontend for your Retrieval-Augmented Generation system
+            </p>
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+                <div class="flex items-center">
+                    <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                    <span class="text-blue-800 font-medium">No Node.js Required!</span>
+                </div>
+                <p class="text-blue-700 text-sm mt-1">
+                    This frontend is built with Python Flask and doesn't require any JavaScript build tools.
+                </p>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div class="bg-white p-6 rounded-lg shadow-sm border">
+                <div class="text-center">
+                    <i class="fas fa-comments text-3xl text-blue-600 mb-4"></i>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Chat Interface</h3>
+                    <p class="text-gray-600 text-sm">
+                        Interact with your RAG system through a conversational interface
+                    </p>
+                    <a href="{{ url_for('chat') }}" 
+                       class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        Start Chatting
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-sm border">
+                <div class="text-center">
+                    <i class="fas fa-chart-bar text-3xl text-green-600 mb-4"></i>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Analytics</h3>
+                    <p class="text-gray-600 text-sm">
+                        Monitor system performance and query analytics
+                    </p>
+                    <a href="{{ url_for('analytics') }}" 
+                       class="mt-4 inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                        View Analytics
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-sm border">
+                <div class="text-center">
+                    <i class="fas fa-cog text-3xl text-purple-600 mb-4"></i>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Settings</h3>
+                    <p class="text-gray-600 text-sm">
+                        Configure system parameters and upload documents
+                    </p>
+                    <a href="{{ url_for('settings') }}" 
+                       class="mt-4 inline-block px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">
+                        Open Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Start -->
+        <div class="bg-gray-50 rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Quick Start</h2>
+            <div class="text-left max-w-2xl mx-auto">
+                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                    <li>Make sure your RAG backend is running on <code class="bg-gray-200 px-2 py-1 rounded">http://localhost:5000</code></li>
+                    <li>Click "Start Chatting" to begin interacting with your documents</li>
+                    <li>Use the Analytics page to monitor system performance</li>
+                    <li>Upload new documents through the Settings page</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">System Status</h3>
+            <div id="system-status" class="flex justify-center">
+                <div class="flex items-center space-x-2">
+                    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                    <span class="text-gray-600">Checking system status...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Check system status on page load
+document.addEventListener('DOMContentLoaded', function() {
+    checkSystemStatus();
+});
+
+async function checkSystemStatus() {
+    try {
+        const response = await fetch('/api/health');
+        const data = await response.json();
+        
+        const statusDiv = document.getElementById('system-status');
+        
+        if (response.ok) {
+            statusDiv.innerHTML = `
+                <div class="flex items-center space-x-2 text-green-600">
+                    <i class="fas fa-check-circle"></i>
+                    <span>System is healthy and ready</span>
+                </div>
+            `;
+        } else {
+            statusDiv.innerHTML = `
+                <div class="flex items-center space-x-2 text-red-600">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>System error: ${data.error || 'Unknown error'}</span>
+                </div>
+            `;
+        }
+    } catch (error) {
+        const statusDiv = document.getElementById('system-status');
+        statusDiv.innerHTML = `
+            <div class="flex items-center space-x-2 text-red-600">
+                <i class="fas fa-times-circle"></i>
+                <span>Cannot connect to backend: ${error.message}</span>
+            </div>
+        `;
+    }
+}
+</script>
+{% endblock %}
