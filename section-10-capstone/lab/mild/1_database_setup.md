@@ -181,7 +181,7 @@ def search_chunks(query_embedding: List[float], limit: int = 10, similarity_thre
     try:
         with get_db_connection() as conn:
             # Use RealDictCursor for named column access
-            with conn.cursor(row_factory=psycopg.extras.RealDictCursor) as cur:
+            with conn.cursor(row_factory=psycopg.RealDictCursor) as cur:
                 cur.execute("""
                     SELECT 
                         chunk_id,
@@ -191,10 +191,10 @@ def search_chunks(query_embedding: List[float], limit: int = 10, similarity_thre
                         processing_info,
                         1 - (embedding <=> %s) as similarity_score
                     FROM document_chunks
-                    WHERE 1 - (embedding <=> %s) > %s
-                    ORDER BY embedding <=> %s
+                    WHERE similarity_score > %s
+                    ORDER BY similarity_score ASC
                     LIMIT %s
-                """, (query_embedding, query_embedding, similarity_threshold, query_embedding, limit))
+                """, (json.dumps(query_embedding),  similarity_threshold,  limit))
                 
                 results = []
                 for row in cur.fetchall():
